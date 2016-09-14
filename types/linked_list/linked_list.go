@@ -5,8 +5,8 @@ import (
 )
 
 type Value struct {
-	Name      string
-	MilesAway int
+	Name  string // city name
+	Miles int // miles to the next city
 }
 
 type Node struct {
@@ -76,8 +76,8 @@ func main() {
 
 	l := List{}
 
-	l.Push(Value{Name: "Atlanta", MilesAway: 0})
-	l.Push(Value{Name: "Las Vegas", MilesAway: 1961})
+	l.Push(Value{Name: "Atlanta", Miles: 0})
+	l.Push(Value{Name: "Las Vegas", Miles: 1961})
 
 	//fmt.Println(" ")
 	//fmt.Println(" ")
@@ -93,7 +93,7 @@ func main() {
 	//fmt.Printf("prev: %v \n", l.tail.prev)
 	//fmt.Printf("next: %v \n", l.tail.next)
 
-	l.Push(Value{Name: "New York", MilesAway: 881})
+	l.Push(Value{Name: "New York", Miles: 881})
 
 	//fmt.Println(" ")
 	//fmt.Println(" ")
