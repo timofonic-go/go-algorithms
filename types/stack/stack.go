@@ -22,6 +22,10 @@ func (s Stack) Len() int {
 	return len(s.stack)
 }
 
+func (s Stack) Peek() int {
+	return s.stack[s.Len()-1]
+}
+
 func main() {
 
 	s := Stack{}
@@ -33,4 +37,7 @@ func main() {
 
 	s.Pop()
 	fmt.Printf("\n\n%v", s)
+
+	peekedEl := s.Peek()
+	fmt.Printf("\n\nPeeked element: %v", peekedEl)
 }
