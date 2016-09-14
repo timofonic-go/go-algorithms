@@ -54,6 +54,24 @@ func (l *List) Push(v Value) *List {
 	return l
 }
 
+// Find traverses the Linked List searching for a node with a matching name.
+// Returns nil if not found.
+func (l *List) Find(name string) *Node {
+
+	found := false
+	var ret *Node = nil
+
+	for n := l.First(); n != nil && !found; n = n.Next() {
+
+		if n.Name == name {
+			found = true
+			ret = n
+		}
+	}
+
+	return ret
+}
+
 func main() {
 
 	l := List{}
@@ -61,33 +79,40 @@ func main() {
 	l.Push(Value{Name: "Atlanta", MilesAway: 0})
 	l.Push(Value{Name: "Las Vegas", MilesAway: 1961})
 
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Printf("Name: %v \n", l.head.Name)
-	fmt.Printf("prev: %v \n", l.head.prev)
-	fmt.Printf("next: %v \n", l.head.next)
-
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Printf("Name: %v \n", l.tail.Name)
-	fmt.Printf("prev: %v \n", l.tail.prev)
-	fmt.Printf("next: %v \n", l.tail.next)
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Printf("Name: %v \n", l.head.Name)
+	//fmt.Printf("prev: %v \n", l.head.prev)
+	//fmt.Printf("next: %v \n", l.head.next)
+	//
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Printf("Name: %v \n", l.tail.Name)
+	//fmt.Printf("prev: %v \n", l.tail.prev)
+	//fmt.Printf("next: %v \n", l.tail.next)
 
 	l.Push(Value{Name: "New York", MilesAway: 881})
 
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Printf("Name: %v \n", l.head.Name)
-	fmt.Printf("prev: %v \n", l.head.prev)
-	fmt.Printf("next: %v \n", l.head.next)
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Printf("Name: %v \n", l.head.Name)
+	//fmt.Printf("prev: %v \n", l.head.prev)
+	//fmt.Printf("next: %v \n", l.head.next)
+	//
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Println(" ")
+	//fmt.Printf("Name: %v \n", l.tail.Name)
+	//fmt.Printf("prev: %v \n", l.tail.prev)
+	//fmt.Printf("next: %v \n", l.tail.next)
 
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Println(" ")
-	fmt.Printf("Name: %v \n", l.tail.Name)
-	fmt.Printf("prev: %v \n", l.tail.prev)
-	fmt.Printf("next: %v \n", l.tail.next)
+	fmt.Println("Search...")
+	n := l.Find("Moscow")
+	fmt.Printf("Searching for Moscow: %v \n", n)
+
+	n = l.Find("New York")
+	fmt.Printf("Searching for New York: %v \n", n)
 }
