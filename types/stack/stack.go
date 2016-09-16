@@ -2,44 +2,42 @@ package main
 
 import "fmt"
 
-type stackStore struct {
+type Stack struct {
 	stack []int
 	len   int
 }
 
-func (s *stackStore) Push(v int) {
+func (s *Stack) Push(v int) {
 	s.stack = append(s.stack, v)
 	s.len++
 }
 
-func (s *stackStore) Pop() {
-
-	if s.len > 0 {
-		lastIdx := s.len - 1
-		s.stack = s.stack[:lastIdx]
-		s.len--
-	}
+func (s *Stack) Pop() {
+	// Take everything except for the head element.
+	s.stack = s.stack[:s.Len()-1]
+	s.len--
 }
 
-func (s stackStore) Peek() int {
-	return s.stack[s.len-1]
+func (s Stack) Len() int {
+	return len(s.stack)
+}
+
+func (s Stack) Peek() int {
+	return s.stack[s.Len()-1]
 }
 
 func main() {
-	s := stackStore{}
+
+	s := Stack{}
 	s.Push(1)
-	s.Push(2)
 	s.Push(3)
 	s.Push(4)
-	s.Push(5)
 
-	fmt.Println("Original stack: ", s.stack)
+	fmt.Printf("%v", s)
 
 	s.Pop()
-	s.Pop()
+	fmt.Printf("\n\n%v", s)
 
-	el := s.Peek()
-
-	fmt.Println("Final stack: ", s.stack)
-	fmt.Println("Peeked el: ", el)
+	peekedEl := s.Peek()
+	fmt.Printf("\n\nPeeked element: %v", peekedEl)
 }
