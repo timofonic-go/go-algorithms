@@ -1,6 +1,8 @@
-// Is Unique: Implement an algorithm to determine if a string has all unique characters.
-// What if you cannot use additional data structures?
-package main
+package cci
+
+import (
+	"github.com/mpmlj/go-algorithms/util"
+)
 
 func FindDupeNoExtraType(st string) bool {
 	var c int
@@ -39,4 +41,15 @@ func FindDupe(st string) bool {
 	}
 
 	return found
+}
+
+func IfPerm(s1, s2 string) bool {
+	s1Sort := util.SortString(s1)
+	s2Sort := util.SortString(s2)
+
+	if s1Sort == s2Sort {
+		return true
+	}
+
+	return false
 }
