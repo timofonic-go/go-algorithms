@@ -4,6 +4,26 @@ import (
 	"github.com/mpmlj/go-algorithms/util"
 )
 
+// 1.1 Is Unique
+func FindDupe(st string) bool {
+
+	var found bool
+	chars := make(map[string]struct{})
+
+	for _, v := range st {
+		s := string(v)
+		_, ok := chars[s]
+		if ok {
+			found = true
+			break
+		}
+		chars[s] = struct{}{}
+	}
+
+	return found
+}
+
+// 1.1 Is Unique w/o additional data type
 func FindDupeNoExtraType(st string) bool {
 	var c int
 	var found bool
@@ -25,24 +45,7 @@ func FindDupeNoExtraType(st string) bool {
 	return found
 }
 
-func FindDupe(st string) bool {
-
-	var found bool
-	chars := make(map[string]struct{})
-
-	for _, v := range st {
-		s := string(v)
-		_, ok := chars[s]
-		if ok {
-			found = true
-			break
-		}
-		chars[s] = struct{}{}
-	}
-
-	return found
-}
-
+// 1.2 Check Permutation
 func IfPerm(s1, s2 string) bool {
 	s1Sort := util.SortString(s1)
 	s2Sort := util.SortString(s2)
