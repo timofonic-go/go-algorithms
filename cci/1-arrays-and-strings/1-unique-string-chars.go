@@ -2,8 +2,6 @@
 // What if you cannot use additional data structures?
 package main
 
-import "fmt"
-
 func FindDupeNoExtraType(st string) bool {
 	var c int
 	var found bool
@@ -41,15 +39,4 @@ func FindDupe(st string) bool {
 	}
 
 	return found
-}
-
-func main() {
-
-	st := "abcdee"
-
-	if FindDupe(st) {
-		fmt.Println("Contains duplicates")
-	} else {
-		fmt.Println("All characters are unique")
-	}
 }
