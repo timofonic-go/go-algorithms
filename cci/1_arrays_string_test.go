@@ -53,3 +53,52 @@ func TestIfPermNoPerm(t *testing.T) {
 		t.Error("Expected false, got true")
 	}
 }
+
+// Test with spaces in the end of a string.
+func TestURLify(t *testing.T) {
+
+	s := "Mr John Smith     "
+	expected := "Mr%20John%20Smith"
+	actual := URLify(s)
+
+	if actual != expected {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
+// Test w/o spaces in the end of a string.
+func TestURLifyNoTrimReq(t *testing.T) {
+
+	s := "Mr John Smith"
+	expected := "Mr%20John%20Smith"
+	actual := URLify(s)
+
+	if actual != expected {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
+// 1.4 Palindrome Permutation
+func TestPalindromePermEven(t *testing.T) {
+	s := "aba b" // From palindrome: abba
+
+	if !PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
+
+func TestPalindromePermOdd(t *testing.T) {
+	s := "abab d" // From palindrome: abdba
+
+	if !PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
+
+func TestPalindromePermFail(t *testing.T) {
+	s := "abcd" // Cannot create a palindrome from these symbols
+
+	if PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
