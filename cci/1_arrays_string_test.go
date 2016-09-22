@@ -77,3 +77,28 @@ func TestURLifyNoTrimReq(t *testing.T) {
 		t.Errorf("Expected %v, got %v", expected, actual)
 	}
 }
+
+// 1.4 Palindrome Permutation
+func TestPalindromePermEven(t *testing.T) {
+	s := "aba b" // From palindrome: abba
+
+	if !PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
+
+func TestPalindromePermOdd(t *testing.T) {
+	s := "abab d" // From palindrome: abdba
+
+	if !PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
+
+func TestPalindromePermFail(t *testing.T) {
+	s := "abcd" // Cannot create a palindrome from these symbols
+
+	if PalindromePerm(s) {
+		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
+	}
+}
