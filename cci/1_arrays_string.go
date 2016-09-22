@@ -2,6 +2,7 @@ package cci
 
 import (
 	"github.com/mpmlj/go-algorithms/util"
+	"strings"
 )
 
 func FindDupeNoExtraType(st string) bool {
@@ -52,4 +53,33 @@ func IfPerm(s1, s2 string) bool {
 	}
 
 	return false
+}
+
+// URLify: Write a method to replace all spaces in a string with '%20'. You may assume that the string
+// has sufficient space at the end to hold the additional characters, and that you are given the "true"
+// length of the string. (Note: If implementing in Java, please use a character array so that you can
+// perform this operation in place.)
+//
+// s := "Mr John Smith     "
+func URLify(s string) string {
+
+	var out string
+	arr := strings.Split(s, "")
+
+	// Flag to implement right trim. Keeps true if right part still hold non-space values.
+	currentSpace := true
+
+	for i := len(arr) - 1; i >= 0; i-- {
+		c := string(arr[i])
+		if c == " " {
+			if !currentSpace {
+				out = "%20" + out
+			}
+		} else {
+			currentSpace = false
+			out = c + out
+		}
+	}
+
+	return out
 }

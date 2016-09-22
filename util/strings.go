@@ -1,8 +1,8 @@
 package util
 
 import (
-	"strings"
 	"sort"
+	"strings"
 )
 
 func SortString(s string) string {

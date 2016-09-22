@@ -53,3 +53,27 @@ func TestIfPermNoPerm(t *testing.T) {
 		t.Error("Expected false, got true")
 	}
 }
+
+// Test with spaces in the end of a string.
+func TestURLify(t *testing.T) {
+
+	s := "Mr John Smith     "
+	expected := "Mr%20John%20Smith"
+	actual := URLify(s)
+
+	if actual != expected {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
+// Test w/o spaces in the end of a string.
+func TestURLifyNoTrimReq(t *testing.T) {
+
+	s := "Mr John Smith"
+	expected := "Mr%20John%20Smith"
+	actual := URLify(s)
+
+	if actual != expected {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
