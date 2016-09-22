@@ -189,24 +189,43 @@ Insertion/Removal
 pale -> ple
 same as ple -> pale
 
-// I should find smaller string in the larger string
-// All symbols should be in the same order
-// Either not interrupted or can only be interrupted once.
-// If interrupted, we assume that after skipping that symbol, all other symbols will match.
 
-s1 := ple, counter i
-s2 := pale, counter j == reference
+Algorithm.
 
-jumps = 0
-i=0, j=0, s1[0] = s2[0], p = p
-i=1, j=1, s1[1] != s2[1], l != a
-ok, we assume that we should jump over j
-jumps++
-if jumps > 1  === return false
-j++
-i=2,j=3,  s1[2] = s2[3], e = e
+1. If both strings are equal, this means zero away case, return true.
 
+2. After #1 check, if both strings are of equal, then as per the task, we expect only 1 replacement,
+i.e. we expect only 1 different symbol.
 
+2. After #2, if string sizes are different, that means that:
+- either an extra symbol was inserted to a beginning or an end of one string
+- or it was inserted in the middle
+
+In case it was inserted in the end, then smaller string should fit in to beginning of the larger string, with just a different symbol remaining in the end.
+[pal]
+[pal](e)
+
+In case, a symbol was inserted in the beginning or a middle, and because all symbols are in the same order,
+if skipping that symbol, the remaining parts of strings should match.
+(p)[ale]
+(b)[ale]
+or
+p(a)[le]
+p(i)[le]
+
+So the logic is to reach the different symbol looping through a smaller string.
+If all symbols are still equals - we have case one.
+If we stumbler upon a mismatching symbol, we compare the remaining parts.
+
+s1 := ple
+s2 := pale, reference
+
+i=0, s1[0] = s2[0], p = p
+i=1, s1[1] != s2[1], l != a
+OK, as far we assume that we have only 1 mismatch, then after throwing away this mismatching symbol,
+remaining parts should match again.
+
+i=2, s1[1:] = s2[2:], i.e. "le" == "le" (we skipped "a" from the reference string)
 
 
 */
@@ -240,18 +259,19 @@ func IsOneAway(s1, s2 string) bool {
 
 	} else {
 
-		// Check one case when more than one edit away.
+		// Validate strings, to be only 1 symbol away maximum.
 		if math.Abs(float64(s1len-s2len)) > 1 {
 			return false
 		}
 
-		// We want to have s2 as a longer, reference string always.
+		// Arrange strings into a working and reference strings,
+		// i.e. s1 - always a small string, s2 - always a large string.
 		if s1len > s2len {
 			s1, s2 = s2, s1
 			s1len, s2len = s2len, s1len
 		}
 
-		// Logic:
+		// Logic recap:
 		// 1. Find first breaking point
 		// 2. If not reached - we are good: pal -> pale
 		// 3. If reached - remaining parts should match: pale -> bale, matching: ale and ale
@@ -268,12 +288,14 @@ func IsOneAway(s1, s2 string) bool {
 			}
 		}
 
+		// If remaining parts are mismatching, the return false.
 		if !match {
 			return false
 		}
 
-		// If we reached this moment, then we have a smaller string matching the first part of the larger string.
-		// Option: to check this from the beginning (both prefix and suffix).
+		// OK. We reached the end of a smaller string and no mismatching symbols are found yet.
+		// As per the task we assume this is the one remaining symbol,
+		// i.e only 1 symbol away, so we can return true.
 		return true
 	}
 

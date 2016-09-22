@@ -139,6 +139,11 @@ var IsOneAwayTests = []struct {
 		"pale12",
 		false,
 	},
+	{
+		"",
+		"",
+		true,
+	},
 }
 
 func TestIsOneAway(t *testing.T) {
