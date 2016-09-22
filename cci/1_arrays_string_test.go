@@ -102,3 +102,51 @@ func TestPalindromePermFail(t *testing.T) {
 		t.Error("Incorrect 1.4 Palindrome Permutation task result.")
 	}
 }
+
+// 1.5 OneAway
+var IsOneAwayTests = []struct {
+	s1       string
+	s2       string
+	expected bool
+}{
+	{
+		"pale",
+		"pale",
+		true,
+	},
+	{
+		"pale",
+		"ple",
+		true,
+	},
+	{
+		"pales",
+		"pale",
+		true,
+	},
+	{
+		"pale",
+		"bale",
+		true,
+	},
+	{
+		"pale",
+		"bake",
+		false,
+	},
+	{
+		"pale",
+		"pale12",
+		false,
+	},
+}
+
+func TestIsOneAway(t *testing.T) {
+
+	for _, tt := range IsOneAwayTests {
+		actual := IsOneAway(tt.s1, tt.s2)
+		if actual != tt.expected {
+			t.Errorf("s1: %v, s2: %v, expected: %v, actual: %v", tt.s1, tt.s2, tt.expected, actual)
+		}
+	}
+}

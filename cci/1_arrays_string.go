@@ -3,6 +3,7 @@ package cci
 import (
 	"fmt"
 	"github.com/mpmlj/go-algorithms/util"
+	"math"
 	"strings"
 )
 
@@ -172,4 +173,109 @@ func PalindromePerm(s string) bool {
 	}
 
 	return result
+}
+
+// 1.5 OneAway
+// 1. Three types of edits possible: insert, remove, replace
+// 2. One or zero edits away
+/*
+Example:
+
+Replacement
+pale -> bale
+we expect only 1 symbol on the same position to not match
+
+Insertion/Removal
+pale -> ple
+same as ple -> pale
+
+// I should find smaller string in the larger string
+// All symbols should be in the same order
+// Either not interrupted or can only be interrupted once.
+// If interrupted, we assume that after skipping that symbol, all other symbols will match.
+
+s1 := ple, counter i
+s2 := pale, counter j == reference
+
+jumps = 0
+i=0, j=0, s1[0] = s2[0], p = p
+i=1, j=1, s1[1] != s2[1], l != a
+ok, we assume that we should jump over j
+jumps++
+if jumps > 1  === return false
+j++
+i=2,j=3,  s1[2] = s2[3], e = e
+
+
+
+
+*/
+func IsOneAway(s1, s2 string) bool {
+
+	// Case when zero edits away
+	if s1 == s2 {
+		return true
+	}
+
+	s1len := len(s1)
+	s2len := len(s2)
+
+	// At this point:
+	// If s1len == s2len - then we expect 1 replacement only
+	// If s2 > s1 - then we expect string 2 to have 1 extra character inserted at any position
+
+	if s1len == s2len {
+
+		diffCnt := 0
+		for i := 0; i < s2len-1; i++ {
+			if s2[i] != s1[i] {
+				diffCnt++
+				if diffCnt > 1 {
+					return false
+				}
+			}
+		}
+
+		return true
+
+	} else {
+
+		// Check one case when more than one edit away.
+		if math.Abs(float64(s1len-s2len)) > 1 {
+			return false
+		}
+
+		// We want to have s2 as a longer, reference string always.
+		if s1len > s2len {
+			s1, s2 = s2, s1
+			s1len, s2len = s2len, s1len
+		}
+
+		// Logic:
+		// 1. Find first breaking point
+		// 2. If not reached - we are good: pal -> pale
+		// 3. If reached - remaining parts should match: pale -> bale, matching: ale and ale
+		match := true
+
+		for i := 0; i < s1len-1; i++ {
+			if s1[i] != s2[i] {
+				// Does not match.
+				// We assume that we should just jump over a mismatching symbol and the rest of the string should match.
+				if s1[i:] != s2[i+1:] {
+					match = false
+					break
+				}
+			}
+		}
+
+		if !match {
+			return false
+		}
+
+		// If we reached this moment, then we have a smaller string matching the first part of the larger string.
+		// Option: to check this from the beginning (both prefix and suffix).
+		return true
+	}
+
+	return false
 }
