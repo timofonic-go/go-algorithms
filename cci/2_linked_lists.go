@@ -54,13 +54,44 @@ NOTES
 2. We need to receive a starting point.
 
 EXAMPLE
-a -> b -> b -> c
+Dennis 	-> 	Tania -> 	Tania -> 	Jack
+nil,Tania	Dennis,Tania	Tania,Jack	Tania,nil
 
+If we are at first node (head) - "Dennis".
+n.Name == "Dennis"
+n.next.Name == "Tania"
+Names are different, move to the next node.
 
+We are at the second node - "Tania".
+n.Name == "Tania"
+n.next.Name == "Tania"
+Names are the same! Delete a duplicate!
+- Point "next" property of the previous node to the next node: n.prev.next = n.next
+- Point "prev" property of the next node to the prev node: n.next.prev = n.prev
+
+NOTES:
+- check for nil pointers
+- how to iterate through a linked list in Go?
 */
 func RemoveDupes(l *List) *List {
 
-	var out *List
+	if l == nil {
+		return &List{}
+	}
 
-	return out
+	// Start with a list head.
+	// Continue if node is not nil.
+	// If not nil, set cursor to the next node.
+	for n := l.head; n != nil; n = n.next {
+		if n.next != nil && n.Name == n.next.Name {
+			n.Delete()
+		}
+	}
+
+	return l
+}
+
+func (n *Node) Delete() {
+	n.prev.next = n.next
+	n.next.prev = n.prev
 }

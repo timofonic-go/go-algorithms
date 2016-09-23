@@ -40,4 +40,49 @@ func TestAddNode(t *testing.T) {
 // 2.1 Remove Dupes
 func TestRemoveDupes(t *testing.T) {
 
+	l := List{}
+
+	l.Add(Value{
+		Name: "Dennis",
+	})
+	l.Add(Value{
+		Name: "Tania",
+	})
+	l.Add(Value{
+		Name: "Tania",
+	})
+	l.Add(Value{
+		Name: "Jack",
+	})
+	l.Add(Value{
+		Name: "Jack",
+	})
+	l.Add(Value{
+		Name: "Jack",
+	})
+	l.Add(Value{
+		Name: "Lola",
+	})
+
+	actual := RemoveDupes(&l)
+	if actual == nil {
+		t.Error("Returned empty list")
+	} else {
+		if actual.head.Name != "Dennis" ||
+			actual.head.next.Name != "Tania" ||
+			actual.head.next.next.Name != "Jack" ||
+			actual.head.next.next.next.Name != "Lola" {
+
+			t.Log("\n\nExpected:\n")
+			for n := l.head; n != nil; n = n.next {
+				t.Logf("%v\n", n.Name)
+			}
+
+			t.Log("\n\nActual:\n")
+			for n := actual.head; n != nil; n = n.next {
+				t.Logf("%v\n", n.Name)
+			}
+
+		}
+	}
 }
