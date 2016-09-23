@@ -492,22 +492,24 @@ PATTERN
 4. Update row Y with zeroes
 
 */
-func ZeroMatrix(m [3][3]int) [3][3]int {
+func ZeroMatrix(m [][]int) [][]int {
 
 	out := m
+	rows := len(m)
+	cols := len(m[0])
 
 OuterLoop:
-	for i := 0; i <= 2; i++ {
-		for j := 0; j <= 2; j++ {
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
 			if m[i][j] == 0 {
 
-				// Update a column
-				for x := 0; x <= 2; x++ {
+				// Fill the row with zeroes
+				for x := 0; x < cols; x++ {
 					out[x][j] = 0
 				}
 
-				// Update a row
-				for x := 0; x <= 2; x++ {
+				// Fill the column with zeroes
+				for x := 0; x < rows; x++ {
 					out[i][x] = 0
 				}
 

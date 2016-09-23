@@ -3,6 +3,8 @@ package cci
 import (
 	"fmt"
 	"testing"
+
+	"github.com/mpmlj/go-algorithms/util"
 )
 
 func TestFindDupe(t *testing.T) {
@@ -242,7 +244,7 @@ func TestZeroMatrix(t *testing.T) {
 	406
 	789
 	*/
-	m := [3][3]int{}
+	m := util.Create2DArrayOfInt(3, 3)
 	m[0][0] = 1
 	m[0][1] = 2
 	m[0][2] = 3
@@ -277,8 +279,11 @@ func TestZeroMatrix(t *testing.T) {
 		t.Error("1.7 Rotate Matrix | Error")
 	}
 
-	for i := 0; i <= 2; i++ {
-		for j := 0; j <= 2; j++ {
+	rows := len(m)
+	cols := len(m[0])
+
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
 
 			fmt.Print(actual[i][j])
 		}
