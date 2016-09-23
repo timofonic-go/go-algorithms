@@ -493,27 +493,27 @@ PATTERN
 
 */
 func ZeroMatrix(m [3][3]int) [3][3]int {
+
 	out := m
 
-	found := false
+OuterLoop:
 	for i := 0; i <= 2; i++ {
 		for j := 0; j <= 2; j++ {
 			if m[i][j] == 0 {
 
+				// Update a column
 				for x := 0; x <= 2; x++ {
-					out[x][i] = 0
-				}
-				for x := 0; x <= 2; x++ {
-					out[j][x] = 0
+					out[x][j] = 0
 				}
 
-				found = true
-				break
+				// Update a row
+				for x := 0; x <= 2; x++ {
+					out[i][x] = 0
+				}
+
+				// Break out of both loops.
+				break OuterLoop
 			}
-		}
-
-		if found {
-			break
 		}
 	}
 
