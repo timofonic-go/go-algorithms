@@ -95,3 +95,52 @@ func (n *Node) Delete() {
 	n.prev.next = n.next
 	n.next.prev = n.prev
 }
+
+// 2.2 Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
+/**
+1. Singly linked list
+2. kth element from the last element
+3. Input: list, k
+4. Return: node
+
+EXAMPLE
+
+a -> b -> c -> d
+k := 2
+expected: b (1: d -> c, 2: c -> b)
+
+
+ALGORITHM
+1. Iterate through list
+2. Fill in an array with nodes
+0:a
+1:b
+2:c
+3:d
+
+3. Get array length
+len(arr): 4
+
+4. Subtract k from length to get an array index
+
+idx := 4 - 1 - 2 = 1, added -1 because index of last element is 1 less then array length
+
+
+5. Get a node from the array by its index
+arr[1] = b
+
+*/
+func ReturnKthToLast(l List, k int) *Node {
+
+	arr := []*Node{}
+
+	i := 0
+	for n := l.head; n != nil; n = n.next {
+		arr = append(arr, n)
+		i++
+	}
+
+	idx := len(arr) - 1 - k
+
+	return arr[idx]
+}

@@ -86,3 +86,35 @@ func TestRemoveDupes(t *testing.T) {
 		}
 	}
 }
+
+// 2.2
+func TestReturnKthToLast(t *testing.T) {
+	l := List{}
+
+	l.Add(Value{
+		Name: "a",
+	})
+	l.Add(Value{
+		Name: "b",
+	})
+	l.Add(Value{
+		Name: "c",
+	})
+	l.Add(Value{
+		Name: "d",
+	})
+	l.Add(Value{
+		Name: "e",
+	})
+	l.Add(Value{
+		Name: "f",
+	})
+
+	k := 2
+	expected := "d"
+	actual := ReturnKthToLast(l, k).Name
+
+	if actual != expected {
+		t.Errorf("Expected: %v, actual: %v", expected, actual)
+	}
+}
