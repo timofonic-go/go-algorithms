@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/mpmlj/go-algorithms/util"
 	"math"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 // 1.1 Is Unique
@@ -374,6 +374,96 @@ func StringCompression(s string) string {
 	}
 
 	out += strconv.Itoa(cnt)
+
+	return out
+}
+
+// 1.7 Rotate Matrix:
+// Given an image represented by an NxN matrix,
+// where each pixel in the image is 4 bytes,
+// write a method to rotate the image by 90 degrees.
+// Can you do this in place?
+/**
+EXAMPLE
+
+Given:
+hello
+pilot
+scala
+robot
+12345
+
+Expected:
+1rsph
+2ocie
+3ball
+4olol
+5tato
+
+PATTERNS
+
+max = 5 = X size = Y size
+
++90 deg pattern:
+0 row -> 4 col
+1 row -> 3 col
+2 row -> 2 col
+3 row -> 1 col
+4 row -> 0 col
+pattern: newCol = max - 1 - oldRow
+
+0 col -> 0 row
+1 col -> 1 row
+2 col -> 2 row
+3 col -> 3 row
+4 col -> 4 row
+pattern: newRow = oldCol
+
+
+CHECKS
+abc
+def
+ghi
+
+max = 3
+
+for char "b":
+oldPos[0,1]
+newCol = max - 1 - oldRow
+newCol = 3 - 1 - 0 = 2
+
+newRow = oldCol
+newRow = 1
+
+newPos: [1,2]
+xxx
+xxb
+xxx
+
+
+for char "g":
+newCol = max - 1 - 2 = 0
+newRow = 0
+new position: [0,0]
+
+Algorithm:
+1. Loop through all elements
+2. Read old coordinates
+3. Insert into a new matrix with new coordinates
+
+*/
+func RotateMatrix(m [3][3]string) [3][3]string {
+
+	out := [3][3]string{}
+
+	for i := 0; i <= 2; i++ {
+		for j := 0; j <= 2; j++ {
+
+			// pattern: newRow = oldCol
+			// pattern: newCol = max - 1 - oldRow
+			out[j][3-1-i] = m[i][j]
+		}
+	}
 
 	return out
 }
