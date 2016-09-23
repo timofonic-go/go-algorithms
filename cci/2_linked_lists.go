@@ -44,6 +44,39 @@ func (l *List) Add(v Value) {
 	l.tail = n
 }
 
+type SList struct {
+	head *SNode
+	tail *SNode
+}
+
+type SNode struct {
+	Value string
+	next  *SNode
+}
+
+func (l *SList) Add(v string) {
+
+	n := &SNode{
+		Value: v,
+	}
+
+	if l.head == nil {
+		l.head = n
+		l.tail = n
+	} else {
+		// Dennis		Tania
+		// ->Tania		->nil
+		// 			tail
+
+		// Dennis		Tania		Jack
+		// ->Tania		->Jack		->nil
+		// 					tail
+
+		l.tail.next = n // 	Tania.next = *Jack
+		l.tail = n      //	l.tail = *Jack
+	}
+}
+
 // 2.1 RemoveDupes
 // Write code to remove duplicates from an unsorted linked list.
 // Follow up: how would you solve this problem if a temporary buffer is not allowed?
@@ -143,4 +176,30 @@ func ReturnKthToLast(l List, k int) *Node {
 	idx := len(arr) - 1 - k
 
 	return arr[idx]
+}
+
+// 2.3 Delete Middle Node
+// Implement an algorithm to delete a node in the middle
+// (i.e., any node but the first and last node, not necessarily the exact middle)
+// of a singly linked list, given only access to that node.
+//
+// EXAMPLE
+// Input: the node c from the linked list a->b->c->d->e->f
+// Result: nothing is returned, but the new linked list looks like a->b->d->e->f
+/**
+
+
+if n.next = c { // n == b
+	n.next = n.next.next
+}
+
+*/
+
+func DeleteMiddleNode(l *SList, sn *SNode) {
+
+	for n := l.head; n != nil; n = n.next {
+		if n.next != nil && n.next.Value == sn.Value {
+			n.next = n.next.next
+		}
+	}
 }

@@ -118,3 +118,43 @@ func TestReturnKthToLast(t *testing.T) {
 		t.Errorf("Expected: %v, actual: %v", expected, actual)
 	}
 }
+
+// 2.3 Delete Middle Node
+func TestDeleteMiddleNode(t *testing.T) {
+	l := &SList{}
+
+	l.Add("a")
+	l.Add("b")
+	l.Add("c")
+	l.Add("d")
+	l.Add("e")
+	l.Add("f")
+
+	n := &SNode{
+		Value: "c",
+	}
+
+	DeleteMiddleNode(l, n)
+
+	if l == nil {
+		t.Error("Returned empty list")
+	} else {
+		if l.head.Value != "a" ||
+			l.head.next.Value != "b" ||
+			l.head.next.next.Value != "d" ||
+			l.head.next.next.next.Value != "e" ||
+			l.head.next.next.next.next.Value != "f" {
+
+			t.Log("\n\nExpected:\n")
+			for n := l.head; n != nil; n = n.next {
+				t.Errorf("%v\n", n.Value)
+			}
+
+			t.Log("\n\nActual:\n")
+			for n := l.head; n != nil; n = n.next {
+				t.Logf("%v\n", n.Value)
+			}
+
+		}
+	}
+}
