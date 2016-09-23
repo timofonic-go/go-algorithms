@@ -5,6 +5,7 @@ import (
 	"github.com/mpmlj/go-algorithms/util"
 	"math"
 	"strings"
+	"strconv"
 )
 
 // 1.1 Is Unique
@@ -300,4 +301,79 @@ func IsOneAway(s1, s2 string) bool {
 	}
 
 	return false
+}
+
+// 1.6 String Compression:
+// Implement a method to perform basic string compression using the counts of repeated characters.
+// For example, the string aabcccccaaa would become a2blc5a3.
+// If the "compressed" string would not become smaller than the original string,
+// your method should return the original string.
+// You can assume the string has only uppercase and lowercase letters (a - z).
+/**
+Specs:
+1. Letters only
+2. If compressed string is >= return original string.
+
+Example
+given: aabcccccaaa
+
+- add a symbol to string
+- iterate through array of symbols
+- accumulate number of identical neighbor symbols
+- if current symbol differs from previous: reset counter to 1, add number to string, add new symbol to string
+
+(a)abcccccaaa, cnt := 1, comparison = false-> string + cnt, cnt=1, +"a"
+
+a(a)bcccccaaa, comparison = true, cnt++
+
+aa(b)bcccccaaa, comparison = false -> string + cnt, cnt := 1, +"b"
+
+aab(b)cccccaaa, comparison = true
+
+End of string:
+aabbcccccaa(a), comparison = true, cnt++
+aabbcccccaa(e), comparison = false -> string + cnt, cnt=1, +"e"
+Note: make sure to add the number to the end
+
+
+*/
+func StringCompression(s string) string {
+
+	var out string
+	var prevChar string
+	var cnt int
+
+	if s == "" {
+		return s
+	}
+
+	for _, v := range s {
+
+		// Different substring reached
+		if string(v) != prevChar {
+
+			// Add qty of identical symbols, except for the first symbol
+			if out != "" {
+				out += strconv.Itoa(cnt)
+			}
+
+			// Reset char counter
+			cnt = 1
+
+			// Add a new character
+			out += string(v)
+		} else {
+			// Traversing the same substring
+
+			// Increment counter of identical characters
+			cnt++
+		}
+
+		// Save previous character for a comparison during next iteration
+		prevChar = string(v)
+	}
+
+	out += strconv.Itoa(cnt)
+
+	return out
 }

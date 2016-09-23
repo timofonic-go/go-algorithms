@@ -155,3 +155,28 @@ func TestIsOneAway(t *testing.T) {
 		}
 	}
 }
+
+// 1.6 String Compression
+var StringCompressionTests = []struct {
+	s1       string
+	expected string
+}{
+	{
+		"aabcccccaaa",
+		"a2b1c5a3",
+	},
+	{
+		"",
+		"",
+	},
+}
+
+func TestStringCompression(t *testing.T) {
+
+	for _, tt := range StringCompressionTests {
+		actual := StringCompression(tt.s1)
+		if actual != tt.expected {
+			t.Errorf("str: %v, expected: %v, actual: %v", tt.s1, tt.expected, actual)
+		}
+	}
+}
