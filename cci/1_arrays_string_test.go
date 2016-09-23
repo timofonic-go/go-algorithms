@@ -233,3 +233,55 @@ func TestRotateMatrix(t *testing.T) {
 		fmt.Println("")
 	}
 }
+
+func TestZeroMatrix(t *testing.T) {
+	/**
+	Given:
+
+	123
+	406
+	789
+	*/
+	m := [3][3]int{}
+	m[0][0] = 1
+	m[0][1] = 2
+	m[0][2] = 3
+	m[1][0] = 4
+	m[1][1] = 5
+	m[1][2] = 6
+	m[2][0] = 7
+	m[2][1] = 8
+	m[2][2] = 9
+
+	/**
+	Expected:
+
+	103
+	000
+	709
+	*/
+
+	actual := ZeroMatrix(m)
+
+	fmt.Print("\nZeroed matrix:\n")
+
+	if actual[0][0] != 1 ||
+		actual[0][1] != 0 ||
+		actual[0][2] != 3 ||
+		actual[1][0] != 0 ||
+		actual[1][1] != 0 ||
+		actual[1][2] != 0 ||
+		actual[2][0] != 7 ||
+		actual[2][1] != 0 ||
+		actual[2][2] != 9 {
+		t.Error("1.7 Rotate Matrix | Error")
+	}
+
+	for i := 0; i <= 2; i++ {
+		for j := 0; j <= 2; j++ {
+
+			fmt.Print(actual[i][j])
+		}
+		fmt.Println("")
+	}
+}

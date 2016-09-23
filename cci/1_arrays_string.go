@@ -467,3 +467,55 @@ func RotateMatrix(m [3][3]string) [3][3]string {
 
 	return out
 }
+
+// 1.8 Zero Matrix
+// Write an algorithm such that if an element in an MxN matrix is 0,
+// its entire row and column are set to 0.
+/**
+EXAMPLE
+
+Given:
+123
+406
+789
+
+Expected:
+103
+000
+709
+
+PATTERN
+
+1. Find a char
+2. Get position: x and y
+3. Update column X with zeroes
+4. Update row Y with zeroes
+
+*/
+func ZeroMatrix(m [3][3]int) [3][3]int {
+	out := m
+
+	found := false
+	for i := 0; i <= 2; i++ {
+		for j := 0; j <= 2; j++ {
+			if m[i][j] == 0 {
+
+				for x := 0; x <= 2; x++ {
+					out[x][i] = 0
+				}
+				for x := 0; x <= 2; x++ {
+					out[j][x] = 0
+				}
+
+				found = true
+				break
+			}
+		}
+
+		if found {
+			break
+		}
+	}
+
+	return out
+}
