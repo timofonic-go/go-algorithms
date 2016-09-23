@@ -523,10 +523,80 @@ OuterLoop:
 }
 
 // 1.9 String Rotation
-// Assume you have a method isSubstringwhich checks if one word is a substring of another.
-// Given two strings, sl and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring
+// Assume you have a method isSubstring which checks if one word is a substring of another.
+// Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring
 // (e.g.,"waterbottle" is a rotation of"erbottlewat").
+/**
+
+EXAMPLE
+
+abcd:
+bcda
+cdab
+dabc
+abcd (matches the original)
+
+NOTES
+1. We cannot loop through all rotations and do isSubstring checks, as the requirement is to have one isSubstring call only.
+2. As far as we need to check for a substring, and once, then I assume that our string s2 is expected to be checked against a certain "unwrapped" string,
+that already contains all possible variations.
+ex.
+to check if cab is a variation of abc
+we can create a full string of all variations:
+abc + bca + cab = abcbcacab
+and check for "cab" to be a substring
+3. Number of possible string variations is len(s1)-1
+4. To get a next string variation:
+from abcd to bcda, I need to
+- take second := i:max
+- take first := 0:i
+- concat second + first
+
+if i := 1
+second := bcd
+first := a
+concat := bcd+a = bcda
+
+EXAMPLE
+Incorrect match
+s1 := abc -> abcbcacab
+abc
+bca
+cab
+
+5. Places where concatenated strings join create new word forms, that are not rotations.
+ex. "abcbcacab" will return true for "bcb", however "bcb" is not a rotation of "abc".
+
+To make sure we are comparing agains rotations, we may introduce a delimiter.
+i.e.
+Unwrapped string may look like: "abc|bca|cab|"
+and we can match string "cab|" against "abc|bca|cab|" while "bcb|" won't work, as expected.
+
+6. EDGE CASES
+empty s1 and s2 strings
+*/
+const delimiter string = "|"
+
 func IsStringRotation(s1, s2 string) bool {
 
-	return false
+	if s1 == "" || s2 == "" {
+		return false
+	}
+
+	unwrappedString := ""
+	second := ""
+	first := ""
+	lastIdx := len(s1)
+
+	for i := 0; i <= lastIdx-1; i++ {
+		second = s1[i:lastIdx]
+		first = s1[0:i]
+		unwrappedString += second + first + delimiter
+	}
+
+	return isSubstring(unwrappedString, s2 + delimiter)
+}
+
+func isSubstring(s1, s2 string) bool {
+	return strings.Contains(s1, s2)
 }

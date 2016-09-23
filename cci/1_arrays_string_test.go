@@ -293,7 +293,7 @@ func TestZeroMatrix(t *testing.T) {
 
 // 1.9 String Rotation
 // Assume you have a method isSubstringwhich checks if one word is a substring of another.
-// Given two strings, sl and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring
+// Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring
 // (e.g.,"waterbottle" is a rotation of"erbottlewat").
 var StringRotationTests = []struct {
 	s1       string
@@ -305,21 +305,26 @@ var StringRotationTests = []struct {
 		"erbottlewat",
 		true,
 	},
+	// We assume empty strings are incorrect arguments.
 	{
 		"",
 		"",
-		true,
-	},
-	{
-		// Assume that we are testing for rotation only.
-		// Identical strings mean that there has been no rotation.
-		"abc",
-		"abc",
 		false,
 	},
 	{
 		"abc",
+		"abc",
+		true,
+	},
+	{
+		"abc",
 		"efg",
+		false,
+	},
+	// "bcb" is a substring, that exists in a concatenated string of variations, however is not a rotation.
+	{
+		"abc",
+		"bcb",
 		false,
 	},
 }
