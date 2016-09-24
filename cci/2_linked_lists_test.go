@@ -234,3 +234,39 @@ func CompareMaps(m1, m2 map[int]int) bool {
 
 	return true
 }
+
+// 2.6 Sum Lists
+func TestSumLists(t *testing.T) {
+
+	l1 := &SList{}
+	l1.Add(7)
+	l1.Add(1)
+	l1.Add(6)
+
+	l2 := &SList{}
+	l2.Add(5)
+	l2.Add(9)
+	l2.Add(2)
+
+	expected := 617 + 295
+	actual := SumLists(l1, l2)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, actual: %v", expected, actual)
+	}
+}
+
+func TestSumListsFails(t *testing.T) {
+
+	l1 := &SList{}
+
+	l2 := &SList{}
+	l2.Add(5)
+
+	expected := -1
+	actual := SumLists(l1, l2)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, actual: %v", expected, actual)
+	}
+}

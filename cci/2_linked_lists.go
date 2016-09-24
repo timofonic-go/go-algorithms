@@ -1,5 +1,9 @@
 package cci
 
+import (
+	"strconv"
+)
+
 type Value struct {
 	Name string
 }
@@ -47,6 +51,7 @@ func (l *List) Add(v Value) {
 type SList struct {
 	head *SNode
 	tail *SNode
+	size int
 }
 
 type SNode struct {
@@ -55,6 +60,8 @@ type SNode struct {
 }
 
 func (l *SList) Add(v int) {
+
+	l.size++
 
 	n := &SNode{
 		Value: v,
@@ -75,6 +82,10 @@ func (l *SList) Add(v int) {
 		l.tail.next = n // 	Tania.next = *Jack
 		l.tail = n      //	l.tail = *Jack
 	}
+}
+
+func (l *SList) Size() int {
+	return l.size
 }
 
 // 2.1 RemoveDupes
@@ -251,4 +262,81 @@ func PartitionSList(l *SList, k int) *SList {
 	left.tail.next = right.head
 
 	return left
+}
+
+// 2.6 Sum Lists:
+// You have two numbers represented by a linked list, where each node contains a single digit.
+// The digits are stored in reverse order, such that the 1's digit is at the head of the list.
+// Write a function that adds the two numbers and returns the sum as a linked list.
+//
+// EXAMPLE
+// Input: (7-> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+// Output: 2 -> 1 -> 9. That is, 912.
+//
+// FOLLOW UP
+// Suppose the digits are stored in forward order. Repeat the above problem.
+//
+// EXAMPLE
+// Input: (6 -> 1 -> 7) + (2 -> 9 -> 5).That is,617 + 295.
+// Output: 9 - > 1 -> 2. That is, 912.
+/**
+
+BRUTE FORCE
+1. Traverse each of the lists
+2. Convert each number to a string character
+4. Add each string character to the beginning of a corresponding string.
+5. Convert numbers to integer type
+6. Return their sum.
+7. For variation B, forward order, we will need
+
+TEST:
+str := ""
+7 -> 1 -> 6
+str = "7" + str -> "7"
+str = "1" + str -> "17"
+str = "6" + str -> "617"
+convertion: "617" -> 617
+
+str = ""
+5 -> 9 -> 2
+str = "5" + str -> "5"
+str = "9" + str -> "95"
+str = "2" + str -> "295"
+convertion: "295" -> 295
+
+sum = 617 + 295 = 912
+
+
+CASES:
+empty lists, return -1
+
+*/
+
+func SumLists(l1, l2 *SList) int {
+
+	if l1.Size() == 0 || l2.Size() == 0 {
+		return -1
+	}
+
+	var s1, s2 string
+
+	for n := l1.head; n != nil; n = n.next {
+		s1 = strconv.Itoa(n.Value) + s1
+	}
+
+	for n := l2.head; n != nil; n = n.next {
+		s2 = strconv.Itoa(n.Value) + s2
+	}
+
+	n1, err := strconv.Atoi(s1)
+	if err != nil {
+		return -1
+	}
+
+	n2, err := strconv.Atoi(s2)
+	if err != nil {
+		return -1
+	}
+
+	return n1 + n2
 }
