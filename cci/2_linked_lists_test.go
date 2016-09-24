@@ -123,15 +123,15 @@ func TestReturnKthToLast(t *testing.T) {
 func TestDeleteMiddleNode(t *testing.T) {
 	l := &SList{}
 
-	l.Add("a")
-	l.Add("b")
-	l.Add("c")
-	l.Add("d")
-	l.Add("e")
-	l.Add("f")
+	l.Add(1)
+	l.Add(2)
+	l.Add(3)
+	l.Add(4)
+	l.Add(5)
+	l.Add(6)
 
 	n := &SNode{
-		Value: "c",
+		Value: 3,
 	}
 
 	DeleteMiddleNode(l, n)
@@ -139,11 +139,11 @@ func TestDeleteMiddleNode(t *testing.T) {
 	if l == nil {
 		t.Error("Returned empty list")
 	} else {
-		if l.head.Value != "a" ||
-			l.head.next.Value != "b" ||
-			l.head.next.next.Value != "d" ||
-			l.head.next.next.next.Value != "e" ||
-			l.head.next.next.next.next.Value != "f" {
+		if l.head.Value != 1 ||
+			l.head.next.Value != 2 ||
+			l.head.next.next.Value != 4 ||
+			l.head.next.next.next.Value != 5 ||
+			l.head.next.next.next.next.Value != 6 {
 
 			t.Log("\n\nExpected:\n")
 			for n := l.head; n != nil; n = n.next {
@@ -152,6 +152,58 @@ func TestDeleteMiddleNode(t *testing.T) {
 
 			t.Log("\n\nActual:\n")
 			for n := l.head; n != nil; n = n.next {
+				t.Logf("%v\n", n.Value)
+			}
+
+		}
+	}
+}
+
+// 2.4 Partition
+func TestPartitionList(t *testing.T) {
+
+	// given: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+	// expected: 3 -> 2 -> 1 -> 5 -> 8 -> 5 -> 10
+	l := &SList{}
+	l.Add(3)
+	l.Add(5)
+	l.Add(8)
+	l.Add(5)
+	l.Add(10)
+	l.Add(2)
+	l.Add(1)
+
+	exp := &SList{}
+	exp.Add(3)
+	exp.Add(2)
+	exp.Add(1)
+	exp.Add(5)
+	exp.Add(8)
+	exp.Add(5)
+	exp.Add(10)
+
+	partition := 5
+	actual := PartitionSList(l, partition)
+
+	if actual == nil {
+		t.Error("Returned empty list")
+	} else {
+
+		if actual.head.Value != 3 ||
+			actual.head.next.Value != 2 ||
+			actual.head.next.next.Value != 1 ||
+			actual.head.next.next.next.Value != 5 ||
+			actual.head.next.next.next.next.Value != 8 ||
+			actual.head.next.next.next.next.next.Value != 5 ||
+			actual.head.next.next.next.next.next.next.Value != 10 {
+
+			t.Log("\n\nExpected:\n")
+			for n := exp.head; n != nil; n = n.next {
+				t.Errorf("%v\n", n.Value)
+			}
+
+			t.Log("\n\nActual:\n")
+			for n := actual.head; n != nil; n = n.next {
 				t.Logf("%v\n", n.Value)
 			}
 

@@ -50,11 +50,11 @@ type SList struct {
 }
 
 type SNode struct {
-	Value string
+	Value int
 	next  *SNode
 }
 
-func (l *SList) Add(v string) {
+func (l *SList) Add(v int) {
 
 	n := &SNode{
 		Value: v,
@@ -202,4 +202,101 @@ func DeleteMiddleNode(l *SList, sn *SNode) {
 			n.next = n.next.next
 		}
 	}
+}
+
+// 2.4 Partition
+// Write code to partition a linked list around a value x,
+// such that all nodes less than x come before all nodes greater than or equal to x.
+// If x is contained within the list, the values of x only need to be after the elements less than x (see below).
+//
+// The partition element x can appear anywhere in the "right partition";
+// it does not need to appear between the left and right partitions.
+/**
+
+EXAMPLE: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+partition: 5
+
+(3)
+3 < 5, as far as this is a head, skip it!
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+
+(5)
+5 >= 5
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+
+(8)
+8 > 5
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+
+(5)
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+
+(10)
+3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+
+(2)
+2 < 5 -> moving to beginning!
+2 -> 3 -> 5 -> 8 -> 5 -> 10 -> 1
+
+(1)
+1 < 5 -> moving to beginning!
+1 -> 2 -> 3 -> 5 -> 8 -> 5 -> 10
+
+
+BRUTE FORCE:
+traverse the list
+compare each node to the partition
+if less:
+a) delete from its current position
+b) add to head
+
+
+OPTIMIZING
+
+1 -> 5 -> 3 -> 4
+partition 1
+-> no changes
+
+3 -> 4 -> 5 -> 1
+partition 1
+-> 3 -> 1 -> 4 -> 5
+
+CHANGE: if < partition, replace the head
+
+
+ALGORITHM:
+1. Traverse the array
+2. Compare current node to the partitioning value
+3. If current value < partitioning value:
+	3.1 Delete this node from its current place
+	3.2 Set this node as a head, with a "next" pointer to the previous head value
+4. if current value >= partitioning value, do nothing.
+
+*/
+func PartitionSList(l *SList, k int) *SList {
+
+	// Error checking in case an empty list was supplied
+	if l == nil {
+		return &SList{}
+	}
+
+	left := &SList{}
+	right := &SList{}
+
+	// Traverse all node starting from the head
+	// running while referenced node is not nil
+	// in the end of the loop, n is replaced with a pointer of the "next' attribute
+	for n := l.head; n != nil; n = n.next {
+
+		if n.Value < k {
+			left.Add(n.Value)
+		} else {
+			right.Add(n.Value)
+		}
+	}
+
+	// Join the lists
+	left.tail.next = right.head
+
+	return left
 }
