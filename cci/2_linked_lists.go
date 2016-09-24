@@ -1,6 +1,7 @@
 package cci
 
 import (
+	"math"
 	"strconv"
 )
 
@@ -370,4 +371,177 @@ func SumListsFwd(l1, l2 *SList) int {
 	}
 
 	return n1 + n2
+}
+
+// 2.6 Palindrome
+// Implement a function to check if a linked list is a palindrome.
+/**
+EXAMPLE 1
+1 -> 2 -> (3) -> 2 -> 1
+
+EXAMPLE 2
+1 -> 2 -> 3 -> 3 -> 2 -> 1
+
+In any case we should have two mirror sequences, with odd or even quantity of numbers.
+Break point will be in 2 cases:
+1. Either next node matches the previous node, as in example 1
+or
+2. Next node matches current node, as in example 2
+
+Working half for example 1 will be: "everything before the breaking point"
+Working half for example 2 will be: "everything before plus the breaking point"
+
+We will be able to understand if this is a palindrome, if remaining half is a mirror copy of the first half.
+
+
+SOLVING EXAMPLE 1, ODD NUMBER
+1 2 3 2 1
+
+1: 1.prev != 1.next, nil != 2
+2: 2.prev != 2.next, 1 != 3
+3: 3.prev == 3.next, 2 == 2
+middle = found
+cur = n
+
+Continue moving to the end of the list,
+but also, start an additional runner reverse order to match nodes from the left part to the right part.
+
+4:
+1 [2] 3 (2) 1
+where
+[] for cur
+() for n
+n++,  but cur := cur.prev []
+value of cur matches value of n
+
+5: [1] 2 3 4 (5)
+value of cur matches value of n
+
+
+SOLVING EXAMPLE 2, EVEN NUMBER
+1 2 3 3 2 1
+
+1: (1) [2] 3 3 2 1
+1.Value != n.next.Value
+
+2: 1 (2) [3] 3 2 1
+2.Value != 2.next.Value
+
+3: 1 2 (3) [3] 2 1
+3.Value == 3.next.Value
+
+cur := 3
+need to shift n to match equal part
+n = n.next - we may want to just do nothing in current loop, and n will be incremented in the next one
+
+continue, matching left and right parts
+4: 1 2 [3 - 1] (3 - 2) 2 1
+3 == 3
+n is on 3-1
+set p to 3 - 2
+so on next step they swap and continue
+
+5: 1 [2] 3 3 (2) 1
+2 == 2
+
+7: [1] 2 3 3 2 (1)
+1 == 1
+
+return true
+
+
+
+OPTIMIZE
+Want to avoid two loops and repetition and find a way to do everything within one loop.
+The difference between odd and even lengths, is the starting point of the cursor 2 for the left section.
+With odd number, it matches the initial cursor 1 position.
+With even numbers, it matches the initial cursor 1 position - 1.
+
+n - cursor for the whole array
+p - for the left part
+reached := false - indicate that second cursor needs running and matching
+
+EDGE-CASES
+- empty list
+- if 1 - 2 - [3 - 3] - 3 - 3 - 2 - 1 - even check won't work!
+I.e. we cannot rely on comparing neighbor values as it will split the list into:
+1-2-3 and 3-3-3-2-1
+
+
+Another option - compare halves and use an array.
+
+EXAMPLE
+1 - 2 - 3 - 3 - 3 - 3 - 2 - 1
+half = [1 - 2 - 3 - 3], and its mirror should match [3 - 3 - 2 - 1]
+or
+1 - 2 - 3 - 2 - 1
+half = [1 - 2] and its mirror should match [2 - 1]
+
+ALGORITHM
+Given: 1 - 2 - 3 - 3 - 3 - 3 - 2 - 1
+
+1. Fill a slice while iterating through a list
+[1,2,3,3,3,3,2,1]
+
+2. Get its length
+8
+
+3. Determine length of its half - N
+4
+
+4. In a for loop with N max, start comparing slice element on the left to the element on the right, counting from the end, in a mirror fashion. On first mismatch return as flase = not a palindrome.
+
+N = 4 iterations
+
+ind
+0: 1 compared to lastIdx - 0, 1 == 1
+1: 2 compared to lastIdx - 1, 2 == 2
+2: 3 == 3
+3: 4 == 4
+
+EXAMPLE W/O PALINDROME
+Given: 1 - 2 - 3 - 4 - 5
+
+1. Fill a slice
+[1,2,3,4,5]
+
+2. Get length
+5
+
+3. Length of half: math.Floor(5/2) = 2
+
+4. Loop through 2 first elements:
+lastIdx = len - 1 = 5 - 1 = 4
+
+idx:
+0: 1 compared to el on index 4. arr[4] = 5, 1 != 5, return false
+
+*/
+
+func IsPalindromeList(l *List) bool {
+
+	if l == nil {
+		return false
+	}
+
+	arr := []string{}
+
+	for n := l.head; n != nil; n = n.next {
+		arr = append([]string{n.Value.Name}, arr...)
+	}
+
+	if len(arr) == 0 {
+		return false
+	}
+
+	halfLength := int(math.Floor(float64(len(arr) / 2)))
+	lastIdx := len(arr) - 1
+
+	for i := 0; i < halfLength; i++ {
+		if arr[i] != arr[lastIdx-i] {
+			return false
+		}
+	}
+
+	return true
 }

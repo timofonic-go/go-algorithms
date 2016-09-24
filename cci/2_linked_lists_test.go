@@ -290,3 +290,55 @@ func TestSumListsFwd(t *testing.T) {
 		t.Errorf("Expected: %v, actual: %v", expected, actual)
 	}
 }
+
+var PalindromeListCases = []struct {
+	n        []string
+	expected bool
+}{
+	{
+		[]string{"a", "b", "c", "b", "a"},
+		true,
+	},
+	{
+		[]string{"a", "b", "c", "c", "b", "a"},
+		true,
+	},
+	{
+		[]string{"a", "b", "c", "d"},
+		false,
+	},
+	{
+		[]string{"a", "b", "c", "c", "c", "b", "a"},
+		true,
+	},
+	{
+		[]string{"a", "b", "c", "c", "c", "c", "b", "a"},
+		true,
+	},
+	{
+		[]string{},
+		false,
+	},
+}
+
+func TestIsPalindromeList(t *testing.T) {
+
+	for i, tt := range PalindromeListCases {
+
+		l := &List{}
+
+		for _, v := range tt.n {
+			l.Add(Value{Name: v})
+		}
+
+		expected := tt.expected
+		actual := IsPalindromeList(l)
+		if actual != expected {
+			t.Errorf("Test %d. Expected: %v, actual: %v", i+1, tt.expected, actual)
+			for n := l.head; n != nil; n = n.next {
+				t.Logf("%v\n", n.Value)
+			}
+		}
+	}
+
+}
