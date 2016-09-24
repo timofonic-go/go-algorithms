@@ -264,7 +264,7 @@ func PartitionSList(l *SList, k int) *SList {
 	return left
 }
 
-// 2.6 Sum Lists:
+// 2.5 Sum Lists:
 // You have two numbers represented by a linked list, where each node contains a single digit.
 // The digits are stored in reverse order, such that the 1's digit is at the head of the list.
 // Write a function that adds the two numbers and returns the sum as a linked list.
@@ -341,7 +341,7 @@ func SumLists(l1, l2 *SList) int {
 	return n1 + n2
 }
 
-// 2.6 Sum Lists - with forward numbers.
+// 2.5 Sum Lists - with forward numbers.
 // Suppose the digits are stored in forward order. Repeat the above problem.
 func SumListsFwd(l1, l2 *SList) int {
 
