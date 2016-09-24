@@ -342,3 +342,30 @@ func TestIsPalindromeList(t *testing.T) {
 	}
 
 }
+
+func TestFindIntersection(t *testing.T) {
+
+	l1 := &SList{}
+	l1.Add(1)
+	n1 := l1.AddRet(2)
+	l1.Add(3)
+	l1.Add(4)
+
+	l2 := &SList{}
+	l2.Add(4)
+	l2.Add(5)
+	l2.AddNode(n1)
+	l2.Add(6)
+
+	expected := n1
+	actual := FindIntersection(l1, l2)
+
+	if actual == nil {
+		t.Error("Error. Intersection not found.")
+	} else {
+
+		if actual != expected {
+			t.Errorf("Expected node with val %v, actual %v", expected.Value, actual.Value)
+		}
+	}
+}

@@ -85,6 +85,52 @@ func (l *SList) Add(v int) {
 	}
 }
 
+func (l *SList) AddRet(v int) *SNode {
+	l.size++
+
+	n := &SNode{
+		Value: v,
+	}
+
+	if l.head == nil {
+		l.head = n
+		l.tail = n
+	} else {
+		// Dennis		Tania
+		// ->Tania		->nil
+		// 			tail
+
+		// Dennis		Tania		Jack
+		// ->Tania		->Jack		->nil
+		// 					tail
+
+		l.tail.next = n // 	Tania.next = *Jack
+		l.tail = n      //	l.tail = *Jack
+	}
+
+	return n
+}
+
+func (l *SList) AddNode(n *SNode) {
+	l.size++
+
+	if l.head == nil {
+		l.head = n
+		l.tail = n
+	} else {
+		// Dennis		Tania
+		// ->Tania		->nil
+		// 			tail
+
+		// Dennis		Tania		Jack
+		// ->Tania		->Jack		->nil
+		// 					tail
+
+		l.tail.next = n // 	Tania.next = *Jack
+		l.tail = n      //	l.tail = *Jack
+	}
+}
+
 func (l *SList) Size() int {
 	return l.size
 }
@@ -544,4 +590,38 @@ func IsPalindromeList(l *List) bool {
 	}
 
 	return true
+}
+
+// 2.7 Intersection: Given two (singly) linked lists, determine if the two lists intersect.
+// Return the intersecting node.
+// Note that the intersection is defined based on reference, not value.
+// That is, if the kth node of the first linked list is the exact same node (by reference) as the jth node
+// of the second linked list, then they are intersecting.
+/**
+
+L1: 1 -> 2 -> 3 -> 4
+L2: 4 -> 5 -> 2 -> 6
+Intersecting node that carries a value 2
+
+BRUTE FORCE
+Traverse List 1
+For evey node of list one, run traversal of List 2
+If current node of List 2 is the same as current node of List 1, return this node
+If not found, return nil
+
+*/
+func FindIntersection(l1, l2 *SList) *SNode {
+	var out *SNode
+
+	for n := l1.head; n != nil; n = n.next {
+		for p := l2.head; p != nil; p = p.next {
+			//fmt.Printf("%v - %v \n", n.Value, p.Value)
+			if n == p {
+				//fmt.Printf("\n\nMatch: %v , val: %v!!! \n\n", n, n.Value)
+				return n
+			}
+		}
+	}
+
+	return out
 }
