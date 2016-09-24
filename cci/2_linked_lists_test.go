@@ -189,13 +189,10 @@ func TestPartitionList(t *testing.T) {
 		t.Error("Returned empty list")
 	} else {
 
-		if actual.head.Value != 3 ||
-			actual.head.next.Value != 2 ||
-			actual.head.next.next.Value != 1 ||
-			actual.head.next.next.next.Value != 5 ||
-			actual.head.next.next.next.next.Value != 8 ||
-			actual.head.next.next.next.next.next.Value != 5 ||
-			actual.head.next.next.next.next.next.next.Value != 10 {
+		a1 := SListToArr(actual)
+		a2 := SListToArr(exp)
+
+		if !CompareMaps(a1, a2) {
 
 			t.Log("\n\nExpected:\n")
 			for n := exp.head; n != nil; n = n.next {
@@ -209,4 +206,31 @@ func TestPartitionList(t *testing.T) {
 
 		}
 	}
+}
+
+func SListToArr(l *SList) map[int]int {
+
+	out := map[int]int{}
+
+	i := 0
+	for n := l.head; n != nil; n = n.next {
+		out[i] = n.Value
+	}
+
+	return out
+}
+
+func CompareMaps(m1, m2 map[int]int) bool {
+
+	if len(m1) != len(m2) {
+		return false
+	}
+
+	for i := 0; i < len(m1); i++ {
+		if m1[i] != m2[i] {
+			return false
+		}
+	}
+
+	return true
 }
