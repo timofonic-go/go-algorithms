@@ -270,3 +270,23 @@ func TestSumListsFails(t *testing.T) {
 		t.Errorf("Expected: %v, actual: %v", expected, actual)
 	}
 }
+
+func TestSumListsFwd(t *testing.T) {
+
+	l1 := &SList{}
+	l1.Add(1)
+	l1.Add(2)
+	l1.Add(3)
+
+	l2 := &SList{}
+	l2.Add(4)
+	l2.Add(5)
+	l2.Add(6)
+
+	expected := 123 + 456
+	actual := SumListsFwd(l1, l2)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, actual: %v", expected, actual)
+	}
+}

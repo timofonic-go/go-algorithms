@@ -340,3 +340,34 @@ func SumLists(l1, l2 *SList) int {
 
 	return n1 + n2
 }
+
+// 2.6 Sum Lists - with forward numbers.
+// Suppose the digits are stored in forward order. Repeat the above problem.
+func SumListsFwd(l1, l2 *SList) int {
+
+	if l1.Size() == 0 || l2.Size() == 0 {
+		return -1
+	}
+
+	var s1, s2 string
+
+	for n := l1.head; n != nil; n = n.next {
+		s1 += strconv.Itoa(n.Value)
+	}
+
+	for n := l2.head; n != nil; n = n.next {
+		s2 += strconv.Itoa(n.Value)
+	}
+
+	n1, err := strconv.Atoi(s1)
+	if err != nil {
+		return -1
+	}
+
+	n2, err := strconv.Atoi(s2)
+	if err != nil {
+		return -1
+	}
+
+	return n1 + n2
+}
