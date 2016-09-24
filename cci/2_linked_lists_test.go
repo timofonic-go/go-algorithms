@@ -189,8 +189,8 @@ func TestPartitionList(t *testing.T) {
 		t.Error("Returned empty list")
 	} else {
 
-		a1 := SListToArr(actual)
-		a2 := SListToArr(exp)
+		a1 := SListToIntMap(actual)
+		a2 := SListToIntMap(exp)
 
 		if !CompareMaps(a1, a2) {
 
@@ -208,7 +208,7 @@ func TestPartitionList(t *testing.T) {
 	}
 }
 
-func SListToArr(l *SList) map[int]int {
+func SListToIntMap(l *SList) map[int]int {
 
 	out := map[int]int{}
 
