@@ -226,3 +226,35 @@ func TestStack_Min(t *testing.T) {
 		t.Errorf("TestStack_Min error! Expected: %v, actual: %v", expected, actual)
 	}
 }
+
+// 3.3 Stack Of Plates
+func TestStacksOfPlates(t *testing.T) {
+	s := StacksOfPlates{
+		Capacity: 3,
+	}
+
+	s.Push(1)
+	s.Push(5)
+	s.Push(8)
+
+	s.Push(9)
+	s.Push(2)
+	s.Push(4)
+
+	s.Push(7)
+	s.Pop()
+
+	expectedStackIdx := 1
+	expectedStackEl := 4
+
+	actualStackIdx := s.GetCurrStackIdx()
+	actualStackEl := s.Peek()
+
+	if expectedStackIdx != actualStackIdx {
+		t.Errorf("TestStacksOfPlates error! Expected idx: %v, actual idx: %v", expectedStackIdx, actualStackIdx)
+	}
+
+	if expectedStackEl != actualStackEl {
+		t.Errorf("TestStacksOfPlates error! Expected el: %v, actual el: %v", expectedStackEl, actualStackEl)
+	}
+}

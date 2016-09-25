@@ -153,3 +153,125 @@ We can have a second stack that wil be storing current min value for each index.
 func (s *Stack) GetMin() int {
 	return s.Min
 }
+
+// 3.3 Stack Of Plates
+// Imagine a (literal) stack of plates. If the stack gets too high, it might topple.
+// Therefore, in real life, we would likely start a new stack when the previous stack exceeds some threshold.
+// Implement a data structure SetOfStacks that mimics this.
+// SetOfStacks should be composed of several stacks and should create a new stack once the previous one exceeds capacity.
+// SetOfStacks. push() and SetOfStacks. pop() should behave identically to a single stack
+// (that is, pop () should return the same values as it would if there were just a single stack).
+// FOLLOW UP
+// Implement a function popAt (int index) which performs a pop operation on a specific sub-stack.
+/**
+EXAMPLE
+Let's say our capacity is 3 plates.
+Start with a 1st stack:
+Push() -> stack 1 : 1
+Push() -> stack 1 : 2
+Push() -> stack 1 : 3
+
+Push() -> here we need to know that we reached the capacity limit.
+If we reached, we need to push to the next stack.
+We can differentiate stacks by their own index.
+So, we capacity is reached, we increment current stack index by 1 and push an item to it.
+Push() -> stack 2 : 4
+etc.
+
+Pop()
+Should check if number of elements in the current stack is > 0
+If > 0, then Pop()
+
+Now, len(el) == 0
+If size == 0, we need to start popping from a previous stack. For this, we need to decrement current stack index.
+
+ALGORITHM:
+
+currStackIdx := 0
+stackCapacity := 3
+
+Push(4) -> 0:4
+Push(7) -> 0:7
+Push(2) -> 0:9
+Push(3) -> 1:3
+Push(1) -> 1:1
+
+Pop()
+0:4
+0:7
+0:9
+1:3
+
+Pop()
+0:4
+0:7
+0:9
+
+Pop()
+0:4
+0:7
+
+etc.
+
+
+NOTES:
+Pop() and Push() should change stack index if reaching lower and higher limits!
+
+*/
+type StacksOfPlates struct {
+	CurrentStackIndex int
+	Stacks            []*StackOfPlates
+	Capacity          int
+}
+
+type StackOfPlates struct {
+	Values []int
+}
+
+func (s *StacksOfPlates) Push(i int) {
+
+	if len(s.Stacks) == 0 {
+		// Initialize first stack.
+		s.AddStack()
+	}
+
+	// Check if capacity is reached
+	if s.GetCurrStackSize() >= s.Capacity {
+		// Reached. Need to switch to a new stack and add plate there.
+		s.CurrentStackIndex++
+
+		// Add a stack
+		s.AddStack()
+	}
+	s.Stacks[s.CurrentStackIndex].Values = append(s.Stacks[s.CurrentStackIndex].Values, i)
+}
+
+func (s *StacksOfPlates) GetCurrStackSize() int {
+	return len(s.Stacks[s.CurrentStackIndex].Values)
+}
+
+func (s *StacksOfPlates) GetCurrStackIdx() int {
+	return s.CurrentStackIndex
+}
+
+func (s *StacksOfPlates) Pop() {
+
+	// Check if stack is empty. If empty, need to switch to a previous stack.
+	if s.GetCurrStackSize() == 0 {
+		s.CurrentStackIndex--
+	}
+	s.Stacks[s.CurrentStackIndex].Values = s.Stacks[s.CurrentStackIndex].Values[0 : s.GetCurrStackSize()-1]
+
+	// If after Pop, the stack is empty, switch to a previous stack.
+	if s.GetCurrStackSize() == 0 {
+		s.CurrentStackIndex--
+	}
+}
+
+func (s *StacksOfPlates) AddStack() {
+	s.Stacks = append(s.Stacks, &StackOfPlates{})
+}
+
+func (s *StacksOfPlates) Peek() int {
+	return s.Stacks[s.CurrentStackIndex].Values[s.GetCurrStackSize()-1]
+}
