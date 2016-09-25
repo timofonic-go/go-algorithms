@@ -366,3 +366,61 @@ func (s *StacksOfPlates) PopShift(idx int) {
 func (s *StacksOfPlates) GetTopEl(idx int) int {
 	return s.Stacks[idx].Values[len(s.Stacks[idx].Values)-1]
 }
+
+// 3.4 Queue via Stacks: Implement a MyQueue class which implements a queue using two stacks.
+/**
+EXAMPLE
+
+given:
+3
+2
+1
+
+add 4:
+4
+3
+2
+1
+
+
+remove: == need to remove 1
+
+cycle through arr1 to pop -push elements to arr2:
+1
+2
+3
+4
+
+return 1 via peek
+pop it
+run cycle on remaining arr2 to re-create arr1:
+4
+3
+2
+
+*/
+type MyQueue struct {
+	s1 []int
+	s2 []int
+}
+
+func (q *MyQueue) Add(i int) {
+	q.s1 = append(q.s1, i)
+}
+
+func (q *MyQueue) Remove() {
+
+	// re-create
+	q.s2 = []int{}
+
+	for _, v := range q.s1 {
+		q.s2 = append(q.s2, v)
+	}
+
+	q.s2 = q.s2[0 : len(q.s2)-1]
+	q.s1 = q.s2
+}
+
+func (q *MyQueue) Peek() int {
+	return q.s2[len(q.s2)-1]
+}

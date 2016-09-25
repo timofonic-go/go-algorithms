@@ -316,3 +316,20 @@ func TestStacksOfPlates_PopAt(t *testing.T) {
 		}
 	}
 }
+
+func TestMyQueue(t *testing.T) {
+
+	q := &MyQueue{}
+	q.Add(1)
+	q.Add(2)
+	q.Add(3)
+	q.Add(4)
+	q.Remove()
+
+	actual := q.Peek()
+	expected := 3
+
+	if expected != actual {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
