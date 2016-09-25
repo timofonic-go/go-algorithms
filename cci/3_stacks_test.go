@@ -258,3 +258,61 @@ func TestStacksOfPlates(t *testing.T) {
 		t.Errorf("TestStacksOfPlates error! Expected el: %v, actual el: %v", expectedStackEl, actualStackEl)
 	}
 }
+
+var StackPopAtTests = []struct {
+	stackIndex int
+	expected   int
+}{
+	{
+		0,
+		8,
+	},
+	{
+		1,
+		3,
+	},
+	{
+		2,
+		2,
+	},
+	{
+		3,
+		1,
+	},
+}
+
+func TestStacksOfPlates_PopAt(t *testing.T) {
+
+	s := StacksOfPlates{
+		Capacity: 3,
+	}
+
+	s.Push(1)
+	s.Push(5)
+	s.Push(8)
+
+	s.Push(9)
+	s.Push(2)
+	s.Push(4)
+
+	s.Push(7)
+	s.Push(8)
+	s.Push(3)
+
+	s.Push(1)
+	s.Push(2)
+
+	s.PopAt(1) // Expected to Pop el 4
+
+	// After this change:
+	// - Peek() from stack 1 should return Peek from stack 2, i.e. 3
+	// - Peek() from stack 2 should return Peek from stack 3, i.e. 2
+	// - Peel() from stack 3 should return 1
+
+	for _, v := range StackPopAtTests {
+		actual := s.GetTopEl(v.stackIndex)
+		if v.expected != actual {
+			t.Errorf("Stack %d, expected %v, got %v", v.stackIndex, v.expected, actual)
+		}
+	}
+}

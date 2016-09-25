@@ -1,5 +1,7 @@
 package cci
 
+import "fmt"
+
 type Stack struct {
 	Values    []int
 	Size      int
@@ -274,4 +276,93 @@ func (s *StacksOfPlates) AddStack() {
 
 func (s *StacksOfPlates) Peek() int {
 	return s.Stacks[s.CurrentStackIndex].Values[s.GetCurrStackSize()-1]
+}
+
+// popAt
+// Implement a function popAt (int index) which performs a pop operation on a specific sub-stack.
+/**
+
+
+8  4  3
+5  2  8  2
+1  9  7  1
+
+if popAt(0), we will have:
+_  4  3
+5  2  8  2
+1  9  7  1
+
+Works as Pop if on a last stack
+However, we need to fill in the empty slot, if not a last stack.
+We can do this shifting all stack elements down. However, as far as this is a stack, we need to Peek & Pop element from the next stack. Thus moving 1 element only from each stack - top plates!
+
+Example:
+8  (_) < 3
+5  2  8 < 2
+1  9  7  1
+
+8  3  2
+5  2  8
+1  9  7  1
+
+
+ALGORITHM:
+1st element of next stack got Pushed to the stack with a missing top el.
+We switched to the next stack.
+Removed 1st element
+Repeat procedure, if this stack is not the last one.
+*/
+func (s *StacksOfPlates) PopAt(idx int) {
+	// Validation if last stack.
+	if idx == len(s.Stacks)-1 {
+		// We need to pop an element from the last stack. No extra work required.
+		s.Pop()
+	} else {
+		// Need to start the shifts.
+		s.PopShift(idx)
+	}
+}
+
+// PopShift iterates through all stacks starting from the given one,
+// runs Pop() on a current stack,
+// assigns top (Peek'ed) element from the next stack.
+func (s *StacksOfPlates) PopShift(idx int) {
+
+	// Loop through remaining stacks including the current one.
+	for i := idx; i <= len(s.Stacks)-1; i++ {
+
+		// Check for a case where last stack may become empty when a last plate is removed.
+		if len(s.Stacks[i].Values) > 0 {
+			// Remove the top plate from the current stack of plates.
+
+			fmt.Println("Working on stack ", i)
+
+			s.Stacks[i].Values = s.Stacks[i].Values[0 : len(s.Stacks[i].Values)-1]
+
+			//fmt.Printf("\n\ncurrent els: %+v \n\n", s.Stacks[i].Values)
+
+			// Take a plate from the next stack...
+
+			// Check if next stack exists or we are at a current stack.
+			if i+1 < len(s.Stacks) {
+
+				el := s.GetTopEl(i + 1)
+
+				//fmt.Printf("\n\nel: %+v \n\n", el)
+
+				// ...and put over the current stack.
+				s.Stacks[i].Values = append(s.Stacks[i].Values, el)
+
+				//fmt.Printf("\n\n%+v \n\n", s.Stacks[i].Values)
+			} else {
+				fmt.Printf("Last stack (%d) reached.\n\n", i)
+			}
+		}
+
+		// Loop end. Start working with a next stack of plates.
+	}
+}
+
+func (s *StacksOfPlates) GetTopEl(idx int) int {
+	return s.Stacks[idx].Values[len(s.Stacks[idx].Values)-1]
 }
