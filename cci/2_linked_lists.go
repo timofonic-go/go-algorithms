@@ -56,8 +56,9 @@ type SList struct {
 }
 
 type SNode struct {
-	Value int
-	next  *SNode
+	Value    int
+	PtrCount int
+	next     *SNode
 }
 
 func (l *SList) Add(v int) {
@@ -79,7 +80,7 @@ func (l *SList) Add(v int) {
 		// Dennis		Tania		Jack
 		// ->Tania		->Jack		->nil
 		// 					tail
-
+		n.PtrCount = 1
 		l.tail.next = n // 	Tania.next = *Jack
 		l.tail = n      //	l.tail = *Jack
 	}
@@ -103,7 +104,7 @@ func (l *SList) AddRet(v int) *SNode {
 		// Dennis		Tania		Jack
 		// ->Tania		->Jack		->nil
 		// 					tail
-
+		n.PtrCount = 1
 		l.tail.next = n // 	Tania.next = *Jack
 		l.tail = n      //	l.tail = *Jack
 	}
@@ -125,7 +126,7 @@ func (l *SList) AddNode(n *SNode) {
 		// Dennis		Tania		Jack
 		// ->Tania		->Jack		->nil
 		// 					tail
-
+		n.PtrCount++
 		l.tail.next = n // 	Tania.next = *Jack
 		l.tail = n      //	l.tail = *Jack
 	}
@@ -624,4 +625,57 @@ func FindIntersection(l1, l2 *SList) *SNode {
 	}
 
 	return out
+}
+
+// 2.8 Loop Detection:
+// Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
+//
+// DEFINITION
+// Circular linked list: A (corrupt) linked list in which a node's next pointer points to an earlier node,
+// so as to make a loop in the linked list.
+//
+// EXAMPLE
+// Input: A -> B -> C - > D -> E -> C [the same C as earlier]
+// Output: C
+/**
+
+Assume a singly linked list.
+
+EXAMPLE FOR AN IN-LINE SOLUTION:
+A -> B -> C - > D -> E -> C
+To understand if points to a previous node,
+we need to compare each node in the list with nodes already traversed.
+
+In this case we have a node, with two pointers to it, while nodes should have only 1 pointer.
+If we could count number of pointers, then just scanning for an item with count of links > 1 would give us this element.
+
+Thus, for A -> B -> C -> D -> E -> C we will have:
+A: PtrCount = 0
+B: PtrCount = 1
+C: PtrCount = 1
+D: PtrCount = 1
+E: PtrCount = 1
+C: PtrCount = 2
+
+PRE-REQUISITES
+1. Add PtrCounter field to a SNode struct
+2. Add PtrCounter increment to the Add method
+
+ALGORITHM
+1. Loop to find a value > 1
+
+*/
+
+func LoopDetection(l *SList) *SNode {
+
+	var out *SNode
+
+	for n := l.head; n != nil; n = n.next {
+		if n.PtrCount > 1 {
+			return n
+		}
+	}
+
+	return out
+
 }

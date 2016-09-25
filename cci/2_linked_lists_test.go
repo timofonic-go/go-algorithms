@@ -369,3 +369,26 @@ func TestFindIntersection(t *testing.T) {
 		}
 	}
 }
+
+// 2.8 Loop Detection
+func TestLoopDetection(t *testing.T) {
+
+	l1 := &SList{}
+	l1.Add(1)
+	n1 := l1.AddRet(2)
+	l1.Add(3)
+	l1.Add(4)
+	l1.AddNode(n1)
+
+	expected := n1
+	actual := LoopDetection(l1)
+
+	if actual == nil {
+		t.Error("Error. Actual value is nil.")
+	} else {
+		if expected != actual {
+			t.Errorf("Expected node with val %v, actual %v", expected.Value, actual.Value)
+		}
+	}
+
+}
