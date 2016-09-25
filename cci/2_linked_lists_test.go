@@ -392,3 +392,27 @@ func TestLoopDetection(t *testing.T) {
 	}
 
 }
+
+func TestLoopDetection2(t *testing.T) {
+
+	l1 := &SList{}
+	l1.Add(1)
+	l1.Add(2)
+	n1 := l1.AddRet(3)
+	l1.Add(5)
+	l1.Add(6)
+	l1.Add(7)
+	l1.AddNode(n1)
+
+	expected := n1
+	actual := LoopDetectionTortoiseAndHare(l1)
+
+	if actual == nil {
+		t.Error("Error. Actual value is nil.")
+	} else {
+		if expected != actual {
+			t.Errorf("Expected node with val %v, actual %v", expected.Value, actual.Value)
+		}
+	}
+
+}

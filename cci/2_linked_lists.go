@@ -1,6 +1,7 @@
 package cci
 
 import (
+	//"fmt"
 	"math"
 	"strconv"
 )
@@ -678,4 +679,84 @@ func LoopDetection(l *SList) *SNode {
 
 	return out
 
+}
+
+// Case when we received a list with a loop and cannot affect its creation.
+/**
+Tortoise and Hare algorithm implementation.
+
+1. Start two runners: slow with a speed of 1, fast with a speed of 2.
+2. Because we have a loop, they should meet.
+n = A
+p = A
+
+n = B
+p = C
+
+n = C
+p = E
+
+n = D
+p = D - match, we are in the loop (can also be the starting node ("C"))!
+
+http://www.geeksforgeeks.org/detect-and-remove-loop-in-a-linked-list/
+
+3. From the collision point, we introduce some changes:
+- move the tortoise to the head
+- hare should start incrementing by 1 (instead of previous 2)
+- their meeting point will be the 1st loop node
+
+4.
+n = B
+p = E
+
+n = B
+p = C
+
+NOTES
+1. We set hare manually to head before the loop of tortoise.
+At this moment they are both standing in the link list head.
+2. We advance hare in the end of the loops to make this move in sync with the next tortoise's move.
+3. Need to skip first position from collision checks, as on the first node,
+i.e. head, they are both pointing to the same node (head).
+
+*/
+func LoopDetectionTortoiseAndHare(l *SList) *SNode {
+
+	hare := l.head
+
+	for n := l.head; n != nil; n = n.next {
+
+		//fmt.Println(n.Value)
+		//fmt.Println(hare.Value)
+
+		// Start checking for a collision after 1st step.
+		if n != l.head && n == hare {
+			//fmt.Printf("\nCollision! n=%v, h=%v\n\n", n.Value, hare.Value)
+
+			// This is a collision point.
+			// Now we want to identify the Loop Start.
+
+			// We restart tortoise from the list head and change hare's speed to 1
+			// to make tortoise and hare move with the same speed.
+
+			for t := l.head; t != nil; t = t.next {
+
+				//fmt.Printf("Tortoise: %v\n", t.Value)
+				//fmt.Printf("Hare: %v\n\n", hare.Value)
+
+				if t == hare {
+					//fmt.Printf("\n\nFound node! n = %v\n\n", t.Value)
+					return t
+				}
+
+				hare = hare.next
+			}
+		}
+
+		// hare will never be nil, as it will be trapped in a loop
+		hare = hare.next.next
+	}
+
+	return &SNode{}
 }
