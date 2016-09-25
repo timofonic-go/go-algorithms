@@ -208,3 +208,21 @@ func TestArr_Peek(t *testing.T) {
 
 	}
 }
+
+// 3.2 Stack Min
+func TestStack_Min(t *testing.T) {
+	s := Stack{}
+	s.Push(3)
+	s.Push(2)
+	s.Push(6)
+	s.Push(4)
+	s.Push(1)
+	s.Pop()
+
+	expected := 2
+	actual := s.GetMin()
+
+	if expected != actual {
+		t.Errorf("TestStack_Min error! Expected: %v, actual: %v", expected, actual)
+	}
+}
