@@ -333,3 +333,25 @@ func TestMyQueue(t *testing.T) {
 		t.Errorf("Expected %v, got %v", expected, actual)
 	}
 }
+
+func TestStack_Sort(t *testing.T) {
+
+	s := &Stack2{}
+	s.Push(4)
+	s.Push(3)
+	s.Push(1)
+	s.Push(5)
+	s.Push(6)
+	s.Push(2)
+
+	s.Sort()
+
+	expectedArr := []int{6, 5, 4, 3, 2, 1}
+
+	for i, expected := range expectedArr {
+		actual := s.Values[i]
+		if expected != actual {
+			t.Errorf("Expected %v, got %v", expected, actual)
+		}
+	}
+}

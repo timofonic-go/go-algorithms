@@ -424,3 +424,135 @@ func (q *MyQueue) Remove() {
 func (q *MyQueue) Peek() int {
 	return q.s2[len(q.s2)-1]
 }
+
+// 3.5 Sort Stack:
+// Write a program to sort a stack such that the smallest items are on the top.
+// You can use an additional temporary stack, but you may not copy the elements
+// into any other data structure (such as an array).
+// The stack supports the following operations: push, pop, peek, and isEmpty.
+/**
+EXAMPLE
+
+4
+3
+1
+5
+6
+2
+
+
+
+3
+1
+5
+6
+2	4
+
+
+4
+1
+5
+6
+2	3
+
+
+
+1
+5
+6	4
+2	3
+
+
+3
+4
+5
+6
+2	1
+
+
+4
+5
+6	3
+2	1
+
+
+5	4
+6	3
+2	1
+
+	5
+	4
+6	3
+2	1
+
+	6
+	5
+	4
+	3
+2	1
+
+3
+4
+5	2
+6	1
+
+	6
+	5
+	4
+	3
+	2
+	1
+*/
+
+type Stack2 struct {
+	Values []int
+}
+
+func (s *Stack2) Push(i int) {
+
+	s.Values = append(s.Values, i)
+}
+
+func (s *Stack2) Pop() int {
+
+	tmp := s.Values[len(s.Values)-1]
+	s.Values = s.Values[0 : len(s.Values)-1]
+	return tmp
+}
+
+func (s *Stack2) Peek() int {
+	if len(s.Values) == 0 {
+		return -1
+	} else {
+		return s.Values[len(s.Values)-1]
+	}
+}
+
+func (s *Stack2) IsEmpty() bool {
+
+	if len(s.Values) == 0 {
+		return true
+	}
+
+	return false
+}
+
+// CCI p.237
+func (s *Stack2) Sort() {
+	r := &Stack2{}
+
+	for !s.IsEmpty() {
+
+		// Insert each element in s in sorted order into r.
+		tmp := s.Pop()
+
+		for !r.IsEmpty() && r.Peek() > tmp {
+			s.Push(r.Pop())
+		}
+		r.Push(tmp)
+	}
+
+	for !r.IsEmpty() {
+		s.Push(r.Pop())
+	}
+}
