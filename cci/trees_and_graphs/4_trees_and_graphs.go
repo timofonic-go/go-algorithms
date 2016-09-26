@@ -4,6 +4,8 @@ type Node struct {
 	Val      int
 	Visited  bool
 	Children []*Node
+	Left     *Node // For trees
+	Right    *Node // For trees
 }
 
 func (n *Node) Add(i int) *Node {
@@ -89,4 +91,50 @@ func (start *Node) RouteCheck(end *Node) bool {
 	}
 
 	return false
+}
+
+// 4.2 Minimal Tree.
+// Given a sorted (increasing order) array with unique integer elements,
+// write an algorithm to create a binary search tree with minimal height.
+/**
+
+To have a lowest height, we need to make left and right parts as equal as possible.
+
+Algorithm:
+0. Make sure *Node has Left and Right properties to connect to subtrees/branches.
+1. Insert into the tree the middle element of the array.
+2. Insert into the left subtree the left subarray elements.
+3. Insert into the right subtree the right subarray elements.
+4. Recurse.
+
+1,2,3,4,5,6,7
+
+	     4
+	123	567
+	recursive for each part
+	 2	6
+	1 3	5 7
+
+*/
+func MinimalTree(arr []int) *Node {
+	return CreateMinimalBST(arr, 0, len(arr)-1)
+}
+
+func CreateMinimalBST(arr []int, start, end int) *Node {
+	var n *Node
+
+	if start > end {
+		return n
+	}
+
+	var mid int = (start + end) / 2
+
+	n = &Node{
+		Val: arr[mid],
+	}
+
+	n.Left = CreateMinimalBST(arr, start, mid-1)
+	n.Right = CreateMinimalBST(arr, mid+1, end)
+
+	return n
 }
