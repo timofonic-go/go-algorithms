@@ -40,7 +40,7 @@ func (q *Queue) Dequeue() *Node {
 
 func (q *Queue) IsEmpty() bool {
 
-	if len(q.Nodes) > 0 {
+	if len(q.Nodes) == 0 {
 		return true
 	}
 	return false
@@ -63,12 +63,12 @@ func (start *Node) RouteCheck(end *Node) bool {
 
 		// Get a first queue element.
 		u := q.Dequeue()
-		if u != nil {
 
+		if u != nil {
 			// Loop through its children
 			for _, v := range u.Children {
 
-				if v.Visited == false {
+				if v.Visited != true {
 
 					// If matches the node we need, return true!
 					if v == end {

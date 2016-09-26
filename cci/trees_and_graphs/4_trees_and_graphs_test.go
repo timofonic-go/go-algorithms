@@ -1,6 +1,8 @@
 package trees_and_graphs
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestRouteCheck(t *testing.T) {
 
@@ -11,21 +13,15 @@ func TestRouteCheck(t *testing.T) {
 	_ = n1.Add(4)
 
 	_ = n13.Add(11)
-	n13_2 := n13.Add(12)
-	_ = n13.Add(13)
+	_ = n13.Add(12)
+	n13_3 := n13.Add(13)
 
-	n2 := &Node{}
-	_ = n1.Add(5)
-	n22 := n1.Add(6)
-	_ = n1.Add(7)
-	_ = n1.Add(8)
-
-	n22.AddNode(n13_2) // Intersection point
-	_ = n22.Add(21)
-	_ = n22.Add(21)
+	_ = n13_3.Add(21)
+	_ = n13_3.Add(22)
+	n3_3 := n13_3.Add(23)
 
 	expected := true
-	actual := n1.RouteCheck(n2)
+	actual := n1.RouteCheck(n3_3)
 
 	if expected != actual {
 		t.Errorf("Expected: %v, got: %v", expected, actual)
