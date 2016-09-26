@@ -355,3 +355,89 @@ func TestStack_Sort(t *testing.T) {
 		}
 	}
 }
+
+// 3.6 Animal Shelter
+func TestAnimalQueue_Enqueue(t *testing.T) {
+
+	dog1 := &Dog{}
+	dog1.SetName("Norton")
+
+	cat1 := &Cat{}
+	cat1.SetName("Musia")
+
+	dog2 := &Dog{}
+	dog2.SetName("Memphis")
+
+	cat2 := &Cat{}
+	cat2.SetName("Jessie")
+
+	q := AnimalQueue{}
+	q.Enqueue(dog1)
+	q.Enqueue(cat1)
+	q.Enqueue(dog2)
+	q.Enqueue(cat2)
+
+	expected := "Norton"
+	actual := q.DequeAny().GetName()
+	if expected != actual {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
+func TestAnimalQueue_DequeueDogs(t *testing.T) {
+
+	dog1 := &Dog{}
+	dog1.SetName("Norton")
+
+	cat1 := &Cat{}
+	cat1.SetName("Musia")
+
+	dog2 := &Dog{}
+	dog2.SetName("Memphis")
+
+	cat2 := &Cat{}
+	cat2.SetName("Jessie")
+
+	q := AnimalQueue{}
+	q.Enqueue(dog1)
+	q.Enqueue(cat1)
+	q.Enqueue(dog2)
+	q.Enqueue(cat2)
+
+	_ = q.DequeueDogs().GetName()
+
+	expected := "Memphis"
+	actual := q.DequeueDogs().GetName()
+	if expected != actual {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
+func TestAnimalQueue_DequeueCats(t *testing.T) {
+
+	dog1 := &Dog{}
+	dog1.SetName("Norton")
+
+	cat1 := &Cat{}
+	cat1.SetName("Musia")
+
+	dog2 := &Dog{}
+	dog2.SetName("Memphis")
+
+	cat2 := &Cat{}
+	cat2.SetName("Jessie")
+
+	q := AnimalQueue{}
+	q.Enqueue(dog1)
+	q.Enqueue(cat1)
+	q.Enqueue(dog2)
+	q.Enqueue(cat2)
+
+	_ = q.DequeueCats().GetName()
+
+	expected := "Jessie"
+	actual := q.DequeueCats().GetName()
+	if expected != actual {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}

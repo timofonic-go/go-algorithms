@@ -1,6 +1,9 @@
 package cci
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type Stack struct {
 	Values    []int
@@ -637,14 +640,12 @@ When we call dequeueAny, we peek at the heads of both the dog and cat queue and 
 
 */
 
-type Animal struct {
-	Animal string
-	Name   string
-	Order  int // timestamp
-}
-
-type Dog struct {
-	Type string
+type Animal interface {
+	GetName() string
+	SetName(name string)
+	GetOrder() int
+	SetOrder(order int)
+	IsOlderThan(a Animal) bool
 }
 
 type AnimalQueue struct {
@@ -654,7 +655,101 @@ type AnimalQueue struct {
 }
 
 func (q *AnimalQueue) Enqueue(a Animal) {
+	a.SetOrder(q.order)
 	q.order++
-	a.Order = q.order
 
+	if reflect.TypeOf(a) == reflect.TypeOf(&Dog{}) {
+		q.Dogs = append(q.Dogs, a)
+	} else if reflect.TypeOf(a) == reflect.TypeOf(&Cat{}) {
+		q.Cats = append(q.Cats, a)
+	}
+}
+
+func (q *AnimalQueue) DequeAny() Animal {
+	if len(q.Dogs) == 0 {
+		return q.DequeueCats()
+	} else if len(q.Cats) == 0 {
+		return q.DequeueDogs()
+	}
+
+	dog := q.Dogs[len(q.Dogs)-1]
+	cat := q.Cats[len(q.Cats)-1]
+
+	if dog.IsOlderThan(cat) {
+		return q.DequeueDogs()
+	} else {
+		return q.DequeueCats()
+	}
+}
+
+func (q *AnimalQueue) DequeueDogs() Animal {
+	a := &Dog{}
+
+	if len(q.Dogs) > 0 {
+		a = q.Dogs[0].(*Dog)
+		q.Dogs = q.Dogs[1:len(q.Dogs)]
+	}
+
+	return a
+}
+
+func (q *AnimalQueue) DequeueCats() Animal {
+	a := &Cat{}
+
+	if len(q.Cats) > 0 {
+		a = q.Cats[0].(*Cat)
+		q.Cats = q.Cats[1:len(q.Cats)]
+	}
+
+	return a
+}
+
+type Dog struct {
+	Order int // timestamp
+	Name  string
+}
+
+func (d *Dog) GetName() string {
+	return d.Name
+}
+
+func (d *Dog) SetName(s string) {
+	d.Name = s
+}
+
+func (d *Dog) SetOrder(i int) {
+	d.Order = i
+}
+
+func (d *Dog) GetOrder() int {
+	return d.Order
+}
+
+func (a *Dog) IsOlderThan(animal Animal) bool {
+	return a.GetOrder() < animal.GetOrder()
+}
+
+type Cat struct {
+	Order int // timestamp
+	Name  string
+}
+
+func (c *Cat) GetName() string {
+	return c.Name
+}
+
+func (c *Cat) SetName(s string) {
+	c.Name = s
+}
+
+func (c *Cat) SetOrder(i int) {
+	c.Order = i
+}
+
+func (c *Cat) GetOrder() int {
+	return c.Order
+}
+
+func (a *Cat) IsOlderThan(animal Animal) bool {
+	return a.GetOrder() < animal.GetOrder()
 }
