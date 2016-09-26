@@ -433,75 +433,135 @@ func (q *MyQueue) Peek() int {
 /**
 EXAMPLE
 
-4
+
+s1	s2
+
+	12
+5	8
+10	3
+7	1
+
+copy 5 to tmp
+
+	12
+	8
+10	3
+7	1
+
+Find a place in s2
+For this remove (Pop) all elements from top to left
+
+8
+12
+10	3
+7	1
+
+
+insert to s2 from temp
+
+
+8
+12	5
+10	3
+7	1
+
+
+copy s2 to left to repeat
+
+1
 3
-1
 5
-6
-2
-
+8
+12
+10
+7
 
 
 3
-1
 5
-6
-2	4
+8
+12
+10
+7	1
 
 
-4
-1
+
 5
-6
-2	3
+8
+12
+10	3
+7	1
 
 
 
-1
-5
-6	4
-2	3
 
 
-3
-4
-5
-6
-2	1
+8
+12	5
+10	3
+7	1
 
 
-4
-5
-6	3
-2	1
+	8
+12	5
+10	3
+7	1
 
 
-5	4
-6	3
-2	1
-
+	12
+	8
 	5
-	4
-6	3
-2	1
+10	3
+7	1
 
-	6
+tmp = 10
+
+	10
+	8
 	5
-	4
+12	3
+7	1
+
+
+1
+3
+5
+8
+10
+12
+7
+
+	12
+	10
+	8
+	5
 	3
-2	1
+7	1
 
+
+
+	7
+8	5
+10	3
+12	1
+
+
+1
 3
-4
-5	2
-6	1
-
-	6
+5
+7
+8
+10
+12
+	12
+	10
+	8
+	7
 	5
-	4
 	3
-	2
 	1
+
+	when left column remains empty, we copy from right stack to left and return it.
 */
 
 type Stack2 struct {
