@@ -616,3 +616,45 @@ func (s *Stack2) Sort() {
 		s.Push(r.Pop())
 	}
 }
+
+// 3.6 Animal Shelter
+// An animal shelter, which holds only dogs and cats, operates on a strictly "first in, first out" basis.
+// People must adopt either the "oldest" (based on arrival time) of all animals at the shelter,
+// or they can select whether they would prefer a dog or a cat (and will receive the oldest animal of
+// that type).
+// They cannot select which specific animal they would like.
+//
+// Create the data structures to maintain this system and implement operations such as
+// enqueue, dequeueAny, dequeueDog and dequeueCat.
+//
+// You may use the built-in Linked list data structure.
+/**
+
+SOLUTION
+...use separate queues for dogs and cats, and to place them within a wrapper class called AnimalQueue.
+We then store some sort of timestamp to mark when each animal was enqueued.
+When we call dequeueAny, we peek at the heads of both the dog and cat queue and return the oldest.
+
+*/
+
+type Animal struct {
+	Animal string
+	Name   string
+	Order  int // timestamp
+}
+
+type Dog struct {
+	Type string
+}
+
+type AnimalQueue struct {
+	Dogs  []Animal
+	Cats  []Animal
+	order int
+}
+
+func (q *AnimalQueue) Enqueue(a Animal) {
+	q.order++
+	a.Order = q.order
+
+}
