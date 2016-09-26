@@ -1,11 +1,14 @@
 package trees_and_graphs
 
+import "fmt"
+
 type Node struct {
 	Val      int
 	Visited  bool
 	Children []*Node
 	Left     *Node // For trees
 	Right    *Node // For trees
+	Next     *Node
 }
 
 func (n *Node) Add(i int) *Node {
@@ -137,4 +140,84 @@ func CreateMinimalBST(arr []int, start, end int) *Node {
 	n.Right = CreateMinimalBST(arr, mid+1, end)
 
 	return n
+}
+
+// 4.3 List Of Depths
+// Given a binary tree, design an algorithm which creates a linked list of all nodes at each depth
+// (e.g., if you have a tree with depth D, you'll have D linked lists).
+/**
+					    5
+			2		        7
+		  1	      3	 	   6	     8
+			     	 4		       9
+
+List 1: 5
+List 2: 2->7
+List 3: 1->3->6->8
+List 4: 4->9
+
+
+NOTES
+We start with a top level, i.e. - a root node of an already prepared binary tree.
+Our result - an array of linked lists.
+
+*/
+
+type List struct {
+	head *Node
+	tail *Node
+	size int
+}
+
+func (l *List) AddNode(n *Node) {
+	l.size++
+
+	if l.head == nil {
+		l.head = n
+		l.tail = n
+	} else {
+		// Dennis		Tania
+		// ->Tania		->nil
+		// 			tail
+
+		// Dennis		Tania		Jack
+		// ->Tania		->Jack		->nil
+		// 					tail
+		l.tail.Next = n // 	Tania.next = *Jack
+		l.tail = n      //	l.tail = *Jack
+	}
+}
+
+func (l *List) Size() int {
+	return l.size
+}
+
+func ListOfDepths(root *Node) []*List {
+
+	result := []*List{}
+	current := &List{}
+
+	if root != nil {
+		current.AddNode(root)
+	}
+
+	for current.Size() > 0 {
+		result = append(result, current) // Add previous level
+
+		parents := current // Go to next level
+
+		current = &List{}
+
+		for parent := parents.head; parent != nil; parent = parent.Next {
+			if parent.Left != nil {
+				current.AddNode(parent.Left)
+			}
+			if parent.Right != nil {
+				current.AddNode(parent.Right)
+			}
+		}
+
+	}
+
+	return result
 }

@@ -76,3 +76,21 @@ func TestMinimalTree(t *testing.T) {
 		t.Errorf("Lvl 4.1 - Right. Expected %v, got %v ", 9, n.Right.Right.Right.Val)
 	}
 }
+
+// 4.3
+func TestListOfDepths(t *testing.T) {
+
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	n := MinimalTree(arr)
+
+	listOfDepths := ListOfDepths(n)
+
+	for i, l := range listOfDepths {
+		t.Log("\n\n")
+		t.Logf("Level %d\n", i+1)
+		for n := l.head; n != nil; n = n.Next {
+			t.Logf("%v -> ", n.Val)
+		}
+		t.Log("\n")
+	}
+}
