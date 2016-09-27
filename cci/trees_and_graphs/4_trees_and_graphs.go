@@ -322,6 +322,7 @@ func isBST(n *Node, min, max int) bool {
 		return false
 	}
 
+	// If left part ( << n ) is not BST OR right part ( > n) is not BST, return false.
 	if !isBST(n.Left, min, n.Val) || !isBST(n.Right, n.Val, max) {
 		return false
 	}
