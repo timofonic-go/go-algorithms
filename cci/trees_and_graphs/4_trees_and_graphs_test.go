@@ -131,3 +131,40 @@ func TestIsBalanced_Unbalanced(t *testing.T) {
 		t.Errorf("Expected: %v, got: %v", expected, actual)
 	}
 }
+
+// 4.5 CheckBST
+func TestCheckBST(t *testing.T) {
+
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	n := MinimalTree(arr)
+
+	expected := true
+	actual := CheckBST(n)
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}
+
+func TestCheckBST_OnUnbalanced(t *testing.T) {
+
+	n := &Node{}
+
+	n.Left = &Node{
+		Val: 1,
+	}
+	n.Right = &Node{
+		Val: 2,
+	}
+	n.Right.Right = &Node{
+		Val: 3,
+	}
+	n.Right.Right.Right = &Node{
+		Val: 4,
+	}
+
+	expected := false
+	actual := CheckBST(n)
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}

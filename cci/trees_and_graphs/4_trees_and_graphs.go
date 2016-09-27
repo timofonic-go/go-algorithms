@@ -228,7 +228,7 @@ func ListOfDepths(root *Node) []*List {
 // Implement a function to check if a binary tree is balanced.
 // For the purposes of this question, a balanced tree is defined to be a tree such that the heights of the two subtrees of any node never differ by more than one.
 /**
-					    5
+				    5
 			2		        7
 		  1	      3	 	   6	     8
 			     	 4		       9
@@ -275,4 +275,56 @@ func checkHeight(n *Node) int {
 	} else {
 		return int(math.Max(float64(leftHeight), float64(rightHeight))) + 1
 	}
+}
+
+// 4.5 Validate BST: Implement a function to check if a binary tree is a _binary search tree_.
+/**
+We leverage the definition of the binary search tree.
+
+...the condition is that all left nodes must be less than or equal to the current node,
+which must be less than all the right nodes.
+Using this thought, we can approach the problem by passing down the min and max values.
+As we iterate through the tree, we verify against progressively narrower ranges.
+
+				    5
+			2		        7
+		  1	      3	 	   6	     8
+			     	 4		       9
+*/
+func CheckBST(n *Node) bool {
+	return isBST(n, math.MinInt32, math.MaxInt32)
+}
+
+func isBST(n *Node, min, max int) bool {
+
+	// Check if node exists. If it is nil, it still matches BST definition.
+	if n == nil {
+		return true
+	}
+
+	// math.MinInt32 && math.MaxInt32 are used as null values.
+	//
+	// Return false, if:
+	//
+	// 1. min value is set (not null)
+	//
+	// AND
+	//
+	// 2.1 Value of current node is lower or equal than the minimal value of current range,
+	// breaking BST definition.
+	//
+	// OR
+	//
+	// 2.2 Value of current node is bigger than the highest value of current range,
+	// breaking the BST definition.
+	//
+	if (min != math.MinInt32 && n.Val <= min) || (max != math.MaxInt32 && n.Val > max) {
+		return false
+	}
+
+	if !isBST(n.Left, min, n.Val) || !isBST(n.Right, n.Val, max) {
+		return false
+	}
+
+	return true
 }
