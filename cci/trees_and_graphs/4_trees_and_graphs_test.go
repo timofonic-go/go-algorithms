@@ -218,4 +218,32 @@ func TestSuccessor(t *testing.T) {
 // 4.7 Build Order
 /**
 PLACEHOLDER, WIP
- */
+*/
+
+// 4.8 Common Ancestor
+func TestCommonAncestor(t *testing.T) {
+
+	n40 := &Node{
+		Val: 40,
+	}
+
+	n20 := n40.AddLeft(20)
+	n60 := n40.AddRight(60)
+
+	_ = n20.AddLeft(10)
+	_ = n20.AddRight(30)
+
+	_ = n60.AddLeft(50)
+	n70 := n60.AddRight(70)
+
+	expected := n40
+	actual := CommonAncestor(n40, n20, n70)
+
+	if nil == actual {
+		t.Fatal("Should return non-nil actual value")
+	}
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected.Val, actual.Val)
+	}
+}

@@ -417,6 +417,7 @@ func leftMostChild(n *Node) *Node {
 
 // ...this problem is called topological sort: linearly ordering the vertices in a graph
 // such that for every edge (a, b), a appears before b in the linear order.
+/*
 
 func FindBuildOrder(projects []string, dependencies [][]string) *Stack {
 	graph := BuildGraph(projects, dependencies)
@@ -430,18 +431,18 @@ const (
 )
 
 type Project struct {
-	state        string
+	state        int
 	children     []*Project
 	pmap         map[string]*Project
 	name         string
 	dependencies int
 }
 
-func (p *Project) GetState() string {
+func (p *Project) GetState() int {
 	return p.state
 }
 
-func (p *Project) SetState(s string) {
+func (p *Project) SetState(s int) {
 	p.state = s
 }
 
@@ -453,7 +454,7 @@ func (p *Project) GetName() string {
 	return p.name
 }
 
-func (p *Project) AddNeighbor(node Project) {
+func (p *Project) AddNeighbor(node *Project) {
 	_, ok := p.pmap[node.GetName()]
 	if !ok {
 		p.children = append(p.children, node)
@@ -559,4 +560,64 @@ func (g *Graph) GetNodes() []*Project {
 func (g *Graph) CreateNode(project *Project) {
 	g.nodes = append(g.nodes, project)
 	g.gmap[project.GetName()] = project
+}
+*/
+
+// 4.8 First Common Ancestor
+// Find first common ancestor of two nodes in a binary tree.
+// Avoid storing additional nodes in a data structure.
+// NOTE: This is not necessary in a binary search tree.
+/**
+Solution #3: Without links to parents
+If p and q are both on the left of the node, branch left to look for the common ancestor.
+If they are both on the right, branch right to look for the common ancestor.
+When p and q are no longer on the same side, current node should be the common ancestor.
+*/
+func CommonAncestor(root, p, q *Node) *Node {
+
+	// Check if node is in the tree.
+	if !covers(root, p) || !covers(root, q) {
+		return nil
+	}
+
+	return ancestorHelper(root, p, q)
+}
+
+func ancestorHelper(root, p, q *Node) *Node {
+	if root == nil || p == nil || q == nil {
+		return nil
+	}
+
+	// Check if both p and q are on the same side.
+	pIsOnLeft := covers(root.Left, p)
+	qIsOnLeft := covers(root.Left, q)
+
+	// If p and q are on different sides, this means current node is an ancestor.
+	if pIsOnLeft != qIsOnLeft {
+		return root
+	}
+
+	// If p and q are both on the same side, determine this side.
+	childSide := root.Left
+	if qIsOnLeft {
+		childSide = root.Right
+	}
+
+	// Use this side to continue traversing to find a common ancestor.
+	return ancestorHelper(childSide, p, q)
+}
+
+// covers checks if node "p" is under the tree of the node "root".
+func covers(root, p *Node) bool {
+	if root == nil {
+		return false
+	}
+
+	// If p is the same as root, we consider this a correct case, i.e. "covers".
+	if root == p {
+		return true
+	}
+
+	// Return true if any of the sides of the root node covers p.
+	return covers(root.Left, p) || covers(root.Right, p)
 }
