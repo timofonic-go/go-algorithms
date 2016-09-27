@@ -401,3 +401,19 @@ func leftMostChild(n *Node) *Node {
 
 	return n
 }
+
+// 4.7 Build Order
+// You are given a list of projects and a list of dependencies
+// (which is a list of pairs of projects, where the second project is dependent on the first project).
+// All of a project's dependencies must be built before the project is.
+// Find a build order that will allow the projects to be built.
+// If there is no valid build order, return an error.
+//
+// EXAMPLE
+// Input:
+// 	projects: a, b, c, d, e, f
+// 	dependencies: (a, d), (f, b), (b, d), (f, a), (d, c)
+// Output: f, e, a, b, d, c
+
+// ...this problem is called topological sort: linearly ordering the vertices in a graph
+// such that for every edge (a, b), a appears before b in the linear order.
