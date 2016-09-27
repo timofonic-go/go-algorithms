@@ -402,7 +402,7 @@ func leftMostChild(n *Node) *Node {
 	return n
 }
 
-// 4.7 Build Order
+// 4.7 Build Order - WIP
 // You are given a list of projects and a list of dependencies
 // (which is a list of pairs of projects, where the second project is dependent on the first project).
 // All of a project's dependencies must be built before the project is.
@@ -417,3 +417,146 @@ func leftMostChild(n *Node) *Node {
 
 // ...this problem is called topological sort: linearly ordering the vertices in a graph
 // such that for every edge (a, b), a appears before b in the linear order.
+
+func FindBuildOrder(projects []string, dependencies [][]string) *Stack {
+	graph := BuildGraph(projects, dependencies)
+	return OrderProjects(graph.GetNodes())
+}
+
+const (
+	Blank = iota
+	Partial
+	Complete
+)
+
+type Project struct {
+	state        string
+	children     []*Project
+	pmap         map[string]*Project
+	name         string
+	dependencies int
+}
+
+func (p *Project) GetState() string {
+	return p.state
+}
+
+func (p *Project) SetState(s string) {
+	p.state = s
+}
+
+func (p *Project) GetChildren() []*Project {
+	return p.children
+}
+
+func (p *Project) GetName() string {
+	return p.name
+}
+
+func (p *Project) AddNeighbor(node Project) {
+	_, ok := p.pmap[node.GetName()]
+	if !ok {
+		p.children = append(p.children, node)
+		node.IncrementDependencies()
+	}
+}
+
+func (p *Project) IncrementDependencies() {
+	p.dependencies++
+}
+func (p *Project) DecrementDependencies() {
+	p.dependencies--
+}
+
+///////////////// #2
+
+type Stack struct {
+	projects []*Project
+}
+
+func (s *Stack) Push(p *Project) {
+	s.projects = append(s.projects, p)
+}
+
+func OrderProjects(projects []*Project) *Stack {
+
+	stack := &Stack{}
+	for _, project := range projects {
+		if project.GetState() == Blank {
+			if !doDFS(project, stack) {
+				return nil
+			}
+		}
+	}
+
+	return stack
+}
+
+func doDFS(project *Project, stack *Stack) bool {
+
+	if project.GetState() == Partial {
+		return false // Cycle
+	}
+
+	if project.GetState() == Blank {
+		project.SetState(Partial)
+		children := project.GetChildren()
+
+		for _, child := range children {
+			if !doDFS(child, stack) {
+				return false
+			}
+		}
+		project.SetState(Complete)
+		stack.Push(project)
+	}
+
+	return true
+}
+
+func BuildGraph(projects []string, dependencies [][]string) *Graph {
+	graph := &Graph{}
+	for _, project := range projects {
+		graph.CreateNode(project)
+	}
+
+	for _, dependency := range dependencies {
+		first := dependency[0]
+		second := dependency[1]
+		graph.AddEdge(first, second)
+	}
+
+	return graph
+}
+
+type Graph struct {
+	nodes []*Project
+	gmap  map[string]Project
+}
+
+func (g *Graph) GetOrCreateNode(name string) *Project {
+	_, ok := g.gmap[name]
+	if !ok {
+		node := &Project{
+			name: name,
+		}
+		g.nodes = append(g.nodes, node)
+		g.gmap[name] = node
+	}
+
+	return g.gmap[name]
+}
+
+func (g *Graph) AddEdge(startName, endName string) {
+	start := g.GetOrCreateNode(startName)
+	end := g.GetOrCreateNode(endName)
+	start.AddNeighbor(end)
+}
+func (g *Graph) GetNodes() []*Project {
+	return g.nodes
+}
+
+func (g *Graph) CreateNode(project *Project) {
+	g.nodes = append(g.nodes, project)
+	g.gmap[project.GetName()] = project
+}
