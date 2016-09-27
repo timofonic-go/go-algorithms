@@ -8,15 +8,18 @@ type Node struct {
 	Val      int
 	Visited  bool
 	Children []*Node
-	Left     *Node // For trees
-	Right    *Node // For trees
-	Next     *Node
+
+	Left   *Node
+	Right  *Node
+	Next   *Node
+	Parent *Node
 }
 
 func (n *Node) Add(i int) *Node {
 
 	newNode := &Node{
-		Val: i,
+		Val:    i,
+		Parent: n,
 	}
 	n.Children = append(n.Children, newNode)
 	return newNode
@@ -328,4 +331,73 @@ func isBST(n *Node, min, max int) bool {
 	}
 
 	return true
+}
+
+// 4.6 Successor:
+//
+// Write an algorithm to find the "next" node (i.e., in-order successor) of a given node
+// in a binary search tree.
+// You may assume that each node has a link to its parent.
+//
+/**
+
+INFO
+
+In-order traversal means to "visit" (often, print) the left branch, then the current node, and finally, the right
+branch.
+
+1 void inOrderTraversal(TreeNode node) {
+2 	if (node!= null) {
+3		inOrderTraversal(node.left);
+4 		visit(node);
+5 		inOrderTraversal(node.right);
+6 	}
+7 }
+
+When performed on a binary search tree, it visits the nodes in ascending order (hence the name "in-order").
+
+LINKS
+http://www.java2blog.com/2014/07/binary-tree-inorder-traversal-in-java.html
+http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
+"In Binary Search Tree, Inorder Successor of an input node can also be defined as the node with the smallest key greater than the key of input node."
+
+NOTES
+1. Requires a Parent node property to exist and related modification of Add()
+
+*/
+
+func Successor(n *Node) *Node {
+
+	if n == nil {
+		return &Node{}
+	}
+
+	// Found right children - return leftmost node of the right subtree.
+	if n.Right != nil {
+		return leftMostChild(n.Right)
+	} else {
+		q := n
+		x := q.Parent // parent
+
+		// Go up until we're on left instead of right
+		for x != nil && x.Left != q {
+			q = x
+			x = x.Parent
+		}
+
+		return x
+	}
+}
+
+func leftMostChild(n *Node) *Node {
+
+	if n == nil {
+		return nil
+	}
+
+	for n.Left != nil {
+		n = n.Left
+	}
+
+	return n
 }

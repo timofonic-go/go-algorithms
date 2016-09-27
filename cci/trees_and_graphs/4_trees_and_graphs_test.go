@@ -168,3 +168,49 @@ func TestCheckBST_OnUnbalanced(t *testing.T) {
 		t.Errorf("Expected: %v, got: %v", expected, actual)
 	}
 }
+
+func (n *Node) AddLeft(i int) *Node {
+	n.Left = &Node{
+		Val:    i,
+		Parent: n,
+	}
+
+	return n.Left
+}
+
+func (n *Node) AddRight(i int) *Node {
+	n.Right = &Node{
+		Val:    i,
+		Parent: n,
+	}
+
+	return n.Right
+}
+
+func TestSuccessor(t *testing.T) {
+
+	n40 := &Node{
+		Val: 40,
+	}
+
+	n20 := n40.AddLeft(20)
+	n60 := n40.AddRight(60)
+
+	_ = n20.AddLeft(10)
+	n30 := n20.AddRight(30)
+
+	_ = n60.AddLeft(50)
+	_ = n60.AddRight(70)
+
+	expected := n40
+	actual := Successor(n30)
+
+	if nil == actual {
+		t.Fatal("Should return non-nil actual value")
+	}
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected.Val, actual.Val)
+	}
+
+}
