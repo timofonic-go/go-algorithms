@@ -1,6 +1,8 @@
 package trees_and_graphs
 
-import "fmt"
+import (
+	"math"
+)
 
 type Node struct {
 	Val      int
@@ -220,4 +222,57 @@ func ListOfDepths(root *Node) []*List {
 	}
 
 	return result
+}
+
+// 4.4 Checked Balanced.
+// Implement a function to check if a binary tree is balanced.
+// For the purposes of this question, a balanced tree is defined to be a tree such that the heights of the two subtrees of any node never differ by more than one.
+/**
+					    5
+			2		        7
+		  1	      3	 	   6	     8
+			     	 4		       9
+
+
+CCI SOLUTION (#2)
+This improved algorithm works by checking the height of each subtree as we recurse down from the root.
+On each node, we recursively get the heights of the left and right subtrees through the checkHeight
+method. If the subtree is balanced, then checkHeight will return the actual height of the subtree. If the
+subtree is not balanced, then checkHeight will return an error code. We will immediately break and
+return an error code from the current call.
+
+This code runs in O(N) time and O(H) space, where H is the height of the tree.
+*/
+
+const LongerBranchFound = math.MinInt32
+
+func IsBalanced(n *Node) bool {
+	h := checkHeight(n)
+	if h == LongerBranchFound {
+		return false
+	}
+
+	return true
+}
+
+func checkHeight(n *Node) int {
+
+	if n == nil {
+		return -1
+	}
+
+	leftHeight := checkHeight(n.Left)
+	if leftHeight == LongerBranchFound {
+		return LongerBranchFound // Pass error up.
+	}
+	rightHeight := checkHeight(n.Right)
+	if rightHeight == LongerBranchFound {
+		return LongerBranchFound // Pass error up.
+	}
+
+	if math.Abs(float64(rightHeight-leftHeight)) > 1 {
+		return LongerBranchFound // Found error -> pass it back
+	} else {
+		return int(math.Max(float64(leftHeight), float64(rightHeight))) + 1
+	}
 }

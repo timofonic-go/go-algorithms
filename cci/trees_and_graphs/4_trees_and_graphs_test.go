@@ -94,3 +94,40 @@ func TestListOfDepths(t *testing.T) {
 		t.Log("\n")
 	}
 }
+
+// 4.4 Checked Balanced.
+func TestIsBalanced_Balanced(t *testing.T) {
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	n := MinimalTree(arr)
+
+	expected := true
+	actual := IsBalanced(n)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}
+
+func TestIsBalanced_Unbalanced(t *testing.T) {
+	n := &Node{}
+
+	n.Left = &Node{
+		Val: 1,
+	}
+	n.Right = &Node{
+		Val: 2,
+	}
+	n.Right.Right = &Node{
+		Val: 3,
+	}
+	n.Right.Right.Right = &Node{
+		Val: 4,
+	}
+
+	expected := false
+	actual := IsBalanced(n)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}
