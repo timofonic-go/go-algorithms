@@ -621,3 +621,46 @@ func covers(root, p *Node) bool {
 	// Return true if any of the sides of the root node covers p.
 	return covers(root.Left, p) || covers(root.Right, p)
 }
+
+// 4.10 Check Subtree
+//
+// T1 and T2 are two very large binary trees, with T1 much bigger than T2.
+// Create an algorithm to determine if T2 is a subtree of T1.
+// A tree T2 is a subtree of T1 if there exists a node n in T1 such that the subtree of n is identical to T2.
+// That is, if you cut off the tree at node n, the two trees would be identical.
+func ContainsTree(t1, t2 *Node) bool {
+	if t2 == nil {
+		return true // The empty tree is always a subtree
+	}
+
+	return subTree(t1, t2)
+}
+
+// subTree traverses bigger tree t1 to find a matching root node to start comparing their trees.
+func subTree(r1, r2 *Node) bool {
+
+	if r1 == nil {
+		// Big tree is empty.
+		return false
+	} else if r1.Val == r2.Val && matchTree(r1, r2) {
+		// Matching node found.
+		return true
+	}
+
+	// Matching node not found. Continue traversing both sides and return true if a smaller tree found.
+	return subTree(r1.Left, r2) || subTree(r1.Right, r2)
+}
+
+// matchTree checks if trees match.
+func matchTree(r1, r2 *Node) bool {
+
+	if r1 == nil && r2 == nil {
+		return true // nothing left in subtree
+	} else if r1 == nil || r2 == nil {
+		return false // one of the trees is empty, therefore trees don't match
+	} else if r1.Val != r2.Val {
+		return false // data does not match
+	} else {
+		return matchTree(r1.Left, r2.Left) && matchTree(r1.Right, r2.Right)
+	}
+}

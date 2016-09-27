@@ -247,3 +247,29 @@ func TestCommonAncestor(t *testing.T) {
 		t.Errorf("Expected: %v, got: %v", expected.Val, actual.Val)
 	}
 }
+
+// 4.10 Check Subtree
+func TestContainsTree(t *testing.T) {
+	n40 := &Node{
+		Val: 40,
+	}
+
+	n20 := n40.AddLeft(20)
+	n60 := n40.AddRight(60)
+
+	_ = n20.AddLeft(10)
+	_ = n20.AddRight(30)
+
+	_ = n60.AddLeft(50)
+	_ = n60.AddRight(70)
+
+	t1 := n40
+	t2 := n60
+
+	expected := true
+	actual := ContainsTree(t1, t2)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}
