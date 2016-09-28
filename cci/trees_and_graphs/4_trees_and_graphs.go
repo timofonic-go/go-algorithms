@@ -1,6 +1,7 @@
 package trees_and_graphs
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 )
@@ -768,6 +769,7 @@ func PathCounter(root *TreeNode, targetSum int) int {
 func countPathsWithSum(node *TreeNode, targetSum, runningSum int, pathCount map[int]int) int {
 
 	if node == nil {
+		fmt.Println("return with 0")
 		return 0
 	}
 
@@ -788,11 +790,18 @@ func countPathsWithSum(node *TreeNode, targetSum, runningSum int, pathCount map[
 		totalPaths++
 	}
 
+	fmt.Println("node.data: ", node.data)
+	fmt.Println("runningSum: ", runningSum)
+	fmt.Println("sum: ", sum)
+	fmt.Println("totalPaths 1: ", totalPaths)
+
 	// Increment pathCount, recurse, then decrement pathCount.
 	incrementHashTable(pathCount, runningSum, 1) // Increment pathCount
 	totalPaths += countPathsWithSum(node.left, targetSum, runningSum, pathCount)
 	totalPaths += countPathsWithSum(node.right, targetSum, runningSum, pathCount)
 	incrementHashTable(pathCount, runningSum, -1) // Decrement pathCount
+
+	fmt.Printf("totalPaths 2: %v\n\n", totalPaths)
 
 	return totalPaths
 }
@@ -810,4 +819,45 @@ func incrementHashTable(hashtable map[int]int, key, delta int) {
 	} else {
 		hashtable[key] = newCount
 	}
+}
+
+// Option #1. Brute-force via DSL.
+//
+// Runtime is O(N log N) in a balanced tree.
+//
+// Traverse to each node.
+// At each node, we recursively try all paths downwards, tracking the sum as we go.
+// As soon as we hit our target sum, we increment the total.
+func CountPathsWithSum(root *TreeNode, targetSum int) int {
+	if root == nil {
+		return 0
+	}
+
+	// Count paths with sum starting from the root.
+	pathsFromRoot := countPathsWithSumFromNode(root, targetSum, 0)
+
+	// Try the nodes on the left and right
+	pathsOnLeft := CountPathsWithSum(root.left, targetSum)
+	pathsOnRight := CountPathsWithSum(root.right, targetSum)
+
+	return pathsFromRoot + pathsOnLeft + pathsOnRight
+}
+
+// Returns the number of paths with this sum starting from this node
+func countPathsWithSumFromNode(node *TreeNode, targetSum, currentSum int) int {
+	if node == nil {
+		return 0
+	}
+
+	currentSum += node.data
+
+	totalPaths := 0
+	if currentSum == targetSum {
+		totalPaths++
+	}
+
+	totalPaths += countPathsWithSumFromNode(node.left, targetSum, currentSum)
+	totalPaths += countPathsWithSumFromNode(node.right, targetSum, currentSum)
+
+	return totalPaths
 }
