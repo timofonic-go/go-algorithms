@@ -1,6 +1,8 @@
 package trees_and_graphs
 
 import (
+	//"fmt"
+	"fmt"
 	"testing"
 )
 
@@ -272,4 +274,76 @@ func TestContainsTree(t *testing.T) {
 	if expected != actual {
 		t.Errorf("Expected: %v, got: %v", expected, actual)
 	}
+}
+
+// 4.11 Random Node
+func TestNewTreeNode(t *testing.T) {
+
+	n := NewTreeNode(40)
+
+	n.insertInOrder(20)
+	n.insertInOrder(60)
+	n.insertInOrder(10)
+	n.insertInOrder(30)
+	n.insertInOrder(50)
+	n.insertInOrder(70)
+
+	//fmt.Printf("%+v\n", n.data) // 40
+	//
+	//fmt.Printf("%+v\n", n.left.data)  // 20
+	//fmt.Printf("%+v\n", n.right.data) // 60
+	//
+	//fmt.Printf("%+v\n", n.left.left.data)  // 10
+	//fmt.Printf("%+v\n", n.left.right.data) // 30
+	//
+	//fmt.Printf("%+v\n", n.right.left.data)  // 50
+	//fmt.Printf("%+v\n", n.right.right.data) // 70
+
+	if n.data != 40 ||
+		n.left.data != 20 ||
+		n.right.data != 60 ||
+		n.left.left.data != 10 ||
+		n.left.right.data != 30 ||
+		n.right.left.data != 50 ||
+		n.right.right.data != 70 {
+		t.Error("TreeNode structure error")
+	}
+
+	if n.size != 7 {
+		t.Errorf("TreeNode node 0 size error. Expected %v, got %v", 7, n.size)
+	}
+	if n.left.size != 3 {
+		t.Errorf("TreeNode node 1.left size error. Expected %v, got %v", 3, n.left.size)
+	}
+	if n.right.size != 3 {
+		t.Errorf("TreeNode node 1.right size error. Expected %v, got %v", 3, n.right.size)
+	}
+
+	if n.left.left.size != 1 {
+		t.Errorf("TreeNode node 2.left.left size error. Expected %v, got %v", 1, n.left.left.size)
+	}
+	if n.left.right.size != 1 {
+		t.Errorf("TreeNode node 2.left.right size error. Expected %v, got %v", 1, n.left.right.size)
+	}
+
+	if n.right.left.size != 1 {
+		t.Errorf("TreeNode node 2.right.left size error. Expected %v, got %v", 1, n.right.left.size)
+	}
+	if n.right.right.size != 1 {
+		t.Errorf("TreeNode node 2.right.right size error. Expected %v, got %v", 1, n.right.right.size)
+	}
+}
+
+func TestNewTreeNode_RandomNode(t *testing.T) {
+
+	n := NewTreeNode(40)
+
+	n.insertInOrder(20)
+	n.insertInOrder(60)
+	n.insertInOrder(10)
+	n.insertInOrder(30)
+	n.insertInOrder(50)
+	n.insertInOrder(70)
+
+	fmt.Printf("\nRandom node fetched: %+v\n", n.getRandomNode().size)
 }

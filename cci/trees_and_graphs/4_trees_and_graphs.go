@@ -2,6 +2,7 @@ package trees_and_graphs
 
 import (
 	"math"
+	"math/rand"
 )
 
 type Node struct {
@@ -663,4 +664,100 @@ func matchTree(r1, r2 *Node) bool {
 	} else {
 		return matchTree(r1.Left, r2.Left) && matchTree(r1.Right, r2.Right)
 	}
+}
+
+// 4.11 Random Node:
+//
+// You are implementing a binary search tree class from scratch, which, in addition
+// to insert, find, and delete, has a method getRandomNode() which returns a random node from the tree.
+// All nodes should be equally likely to be chosen. Design and implement an algorithm
+// for getRandomNode, and explain how you would implement the rest of the methods.
+//
+// Option #6
+// In a balanced tree, this algorithm will be O(log N), where N is the number of nodes.
+// Key - evenly distribute probabilities across the options.
+// Every node = 1/N probability for N nodes in total.
+// "Even in a balanced tree, the number of nodes on each side might not be equal. If we have more nodes on the left than the right, then we need to go left more often."
+
+type TreeNode struct {
+	data  int
+	left  *TreeNode
+	right *TreeNode
+	size  int // size attribute that will be used for random selection of nodes
+}
+
+// NewTreeNode is a helper for tree generation.
+func NewTreeNode(d int) *TreeNode {
+	return &TreeNode{
+		data: d,
+		size: 1,
+	}
+}
+
+// getRandomNode fetch a random node based on a probability of a specific side of node.
+func (t *TreeNode) getRandomNode() *TreeNode {
+	leftSize := 0
+	if t.left != nil {
+		leftSize = t.left.size
+	}
+
+	// get number of children for a current node
+	index := rand.Intn(t.size)
+
+	// Determine a size for a next random generation.
+	if index < leftSize {
+
+		// Select random node from the left part
+		return t.left.getRandomNode()
+	} else if index == leftSize {
+		return t
+	} else {
+		// Select random node from the right part
+		return t.right.getRandomNode()
+	}
+}
+
+func (t *TreeNode) insertInOrder(d int) {
+	if d <= t.data {
+		if t.left == nil {
+			t.left = NewTreeNode(d)
+		} else {
+			t.left.insertInOrder(d)
+		}
+	} else {
+		if t.right == nil {
+			t.right = NewTreeNode(d)
+		} else {
+			t.right.insertInOrder(d)
+		}
+	}
+	t.size++
+}
+
+//func (t *TreeNode) getSize() int {
+//	return t.size
+//}
+//
+//func (t *TreeNode) getData() int {
+//	return t.data
+//}
+
+// recursively search for a node with value d and return it or nil if not found
+func (t *TreeNode) find(d int) *TreeNode {
+	if t.data == d {
+		return t
+	} else if d <= t.data {
+		if t.left != nil {
+			return t.left.find(d)
+		}
+		return nil
+
+	} else if d > t.data {
+		if t.right != nil {
+			return t.right.find(d)
+		}
+		return nil
+	}
+
+	return nil
 }
