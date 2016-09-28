@@ -347,3 +347,46 @@ func TestNewTreeNode_RandomNode(t *testing.T) {
 
 	fmt.Printf("\nRandom node fetched: %+v\n", n.getRandomNode().size)
 }
+
+// 4.12 Paths with Sum
+func TestPathCounter(t *testing.T) {
+
+	n := NewTreeNode(40)
+
+	n.left = &TreeNode{
+		data: 20,
+	}
+	n.left.left = &TreeNode{
+		data: 10,
+	}
+	n.left.right = &TreeNode{
+		data: 30,
+	}
+	n.left.left.left = &TreeNode{
+		data: 5,
+	}
+	n.left.left.right = &TreeNode{
+		data: 15,
+	}
+
+	n.right = &TreeNode{
+		data: 45,
+	}
+	n.right.left = &TreeNode{
+		data: 50,
+	}
+	n.right.right = &TreeNode{
+		data: 60,
+	}
+
+	expected := 2
+	actual := PathCounter(n, 85)
+
+	// 2 paths:
+	// 40 -> 45
+	// 40 -> 20 -> 10 -> 15
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected, actual)
+	}
+}

@@ -734,14 +734,6 @@ func (t *TreeNode) insertInOrder(d int) {
 	t.size++
 }
 
-//func (t *TreeNode) getSize() int {
-//	return t.size
-//}
-//
-//func (t *TreeNode) getData() int {
-//	return t.data
-//}
-
 // recursively search for a node with value d and return it or nil if not found
 func (t *TreeNode) find(d int) *TreeNode {
 	if t.data == d {
@@ -760,4 +752,62 @@ func (t *TreeNode) find(d int) *TreeNode {
 	}
 
 	return nil
+}
+
+// 4.12 Paths with Sum:
+//
+// You are given a binary tree in which each node contains an integer value (which might be positive or negative).
+// Design an algorithm to count the number of paths that sum to a given value.
+// The path does not need to start or end at the root or a leaf, but it must go downwards
+// (traveling only from parent nodes to child nodes).
+func PathCounter(root *TreeNode, targetSum int) int {
+	m := make(map[int]int)
+	return countPathsWithSum(root, targetSum, 0, m)
+}
+
+func countPathsWithSum(node *TreeNode, targetSum, runningSum int, pathCount map[int]int) int {
+
+	if node == nil {
+		return 0
+	}
+
+	// Count paths with sum ending at the current node.
+	runningSum += node.data
+	sum := runningSum - targetSum
+
+	// Lookup ...
+	totalPaths := 0
+	val, ok := pathCount[sum]
+	if ok {
+		totalPaths = val
+	}
+
+	// If runningSum equals targetSum, then one additional path starts at root.
+	// Add in this path.
+	if runningSum == targetSum {
+		totalPaths++
+	}
+
+	// Increment pathCount, recurse, then decrement pathCount.
+	incrementHashTable(pathCount, runningSum, 1) // Increment pathCount
+	totalPaths += countPathsWithSum(node.left, targetSum, runningSum, pathCount)
+	totalPaths += countPathsWithSum(node.right, targetSum, runningSum, pathCount)
+	incrementHashTable(pathCount, runningSum, -1) // Decrement pathCount
+
+	return totalPaths
+}
+
+func incrementHashTable(hashtable map[int]int, key, delta int) {
+	newCount := 0
+	val, ok := hashtable[key]
+	if ok {
+		newCount = val + delta
+	}
+
+	// Remove when zero to reduce space usage
+	if newCount == 0 {
+		delete(hashtable, key)
+	} else {
+		hashtable[key] = newCount
+	}
 }
