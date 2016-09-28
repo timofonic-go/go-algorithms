@@ -18,3 +18,32 @@ func TestFindFibonacciTopDown(t *testing.T) {
 		t.Errorf("Expected: %v, got: %v", expected, actual)
 	}
 }
+
+// 8.1 Triple Step.
+var CountWaysTests = []struct {
+	steps    int
+	expected int
+}{
+	{
+		3,
+		4,
+	},
+	{
+		4,
+		7,
+	},
+	{
+		5,
+		13,
+	},
+}
+
+func TestCountWays(t *testing.T) {
+
+	for i, test := range CountWaysTests {
+		actual := CountWays(test.steps)
+		if test.expected != actual {
+			t.Errorf("Test %d. Expected: %v, got: %v", i, test.expected, actual)
+		}
+	}
+}
