@@ -25,7 +25,7 @@ func (s *Stack) pop() int {
 	}
 	out := s.data[len(s.data)-1]
 
-	s.data = s.data[0:len(s.data)-1]
+	s.data = s.data[0 : len(s.data)-1]
 
 	return out
 }
