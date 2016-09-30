@@ -174,7 +174,9 @@ func (t *Tower) moveDisks(n int, destination, buffer *Tower) {
 		// Move remaining, largest disk into destination
 		t.moveToTop(destination)
 
-		// Move remaining n-1 disks on top of the largest disk in destination
+		// Move remaining n-1 disks, from the top of the buffer to the destination.
+		// We are moving disks from the current buffer, hence buffer.moveDisks(...
+		// We are moving disks using current tower as a buffer, hence t in ...,destination, t)
 		buffer.moveDisks(n-1, destination, t)
 	}
 }
