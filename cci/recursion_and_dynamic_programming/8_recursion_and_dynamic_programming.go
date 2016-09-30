@@ -118,10 +118,9 @@ func CountWays(n int) int {
 // (3) A disk cannot be placed on top of a smaller disk.
 //
 // Write a program to move the disks from the first tower to the last using Stacks.
-
 func HanoiTower() []*Tower {
 
-	// rods
+	// Init array of towers
 	n := 3
 	towers := make([]*Tower, n)
 
@@ -129,17 +128,19 @@ func HanoiTower() []*Tower {
 		towers[i] = NewTower(i)
 	}
 
+	// Fill in a first tower with disks in ascending order
 	for i := n - 1; i >= 0; i-- {
 		towers[0].add(i)
 	}
 
+	// Start the process of moving disks
 	towers[0].moveDisks(n, towers[2], towers[1])
 
 	return towers
 }
 
 type Tower struct {
-	disks Stack
+	disks Stack // contains data as []int to store disks
 	index int
 }
 
@@ -157,15 +158,23 @@ func (t *Tower) add(d int) {
 	}
 }
 
+// moveToTop takes a disks from a top of the current tower to a new tower
+// need to move remaining, larger disks into a bottom level of new towers
 func (t *Tower) moveToTop(twr *Tower) {
 	top := t.disks.pop()
 	twr.add(top)
 }
 
+// moveDisks implements logic of moving disks
 func (t *Tower) moveDisks(n int, destination, buffer *Tower) {
 	if n > 0 {
+		// Move all top disks except for the one on the bottom
+		// Moves from from the origin t to the buffer, using destination as a buffer
 		t.moveDisks(n-1, buffer, destination)
+		// Move remaining, largest disk into destination
 		t.moveToTop(destination)
+
+		// Move remaining n-1 disks on top of the largest disk in destination
 		buffer.moveDisks(n-1, destination, t)
 	}
 }
