@@ -1,6 +1,9 @@
 package recursion_and_dynamic_programming
 
-import "testing"
+import (
+	"sort"
+	"testing"
+)
 
 /**
 Find kth fibonacci number, top-down implementation with memorization.
@@ -45,5 +48,17 @@ func TestCountWays(t *testing.T) {
 		if test.expected != actual {
 			t.Errorf("Test %d. Expected: %v, got: %v", i, test.expected, actual)
 		}
+	}
+}
+
+// 8.6 Hanoi Tower
+func TestHanoiRun(t *testing.T) {
+
+	//src := []int{2, 3, 1}
+
+	actual := HanoiTower()
+
+	if !sort.IntsAreSorted(actual.disks.data) {
+		t.Error("Failed!")
 	}
 }

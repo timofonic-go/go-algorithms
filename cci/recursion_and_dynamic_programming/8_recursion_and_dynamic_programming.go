@@ -1,5 +1,7 @@
 package recursion_and_dynamic_programming
 
+import "fmt"
+
 // Find nth fibonacci number
 /**
 	I'll be using a top-to-bottom approach with memorization from the 8th chapter.
@@ -103,3 +105,101 @@ func CountWays(n int) int {
 	}
 }
 
+// 8.6 Hanoi Tower
+//
+// In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of
+// different sizes which can slide onto any tower.
+//
+// The puzzle starts with disks sorted in ascending order of size from top to bottom
+// (i.e., each disk sits on top of an even larger one). You have the following constraints:
+//
+// (1) Only one disk can be moved at a time.
+// (2) A disk is slid off the top of one tower onto another tower.
+// (3) A disk cannot be placed on top of a smaller disk.
+//
+// Write a program to move the disks from the first tower to the last using Stacks.
+
+func HanoiTower() *Tower {
+
+	// rods
+	n := 3
+	towers := make([]*Tower, n)
+
+	for i := 0; i < 3; i++ {
+		towers[i] = NewTower(i)
+	}
+
+	for i := n - 1; i >= 0; i-- {
+		towers[0].add(i)
+	}
+
+	return towers[0].moveDisks(n, towers[2], towers[1])
+}
+
+type Stack struct {
+	data []int
+}
+
+func (s *Stack) isEmpty() bool {
+	return len(s.data) == 0
+}
+
+func (s *Stack) peek() int {
+	if len(s.data) == 0 {
+		return -1
+	}
+	return s.data[len(s.data)-1]
+}
+
+func (s *Stack) pop() int {
+	if len(s.data) == 0 {
+		return -1
+	}
+	out := s.data[len(s.data)-1]
+
+	s.data = s.data[1:len(s.data)]
+
+	return out
+}
+
+func (s *Stack) push(d int) {
+	s.data = append(s.data, d)
+}
+
+type Tower struct {
+	disks Stack
+	index int
+}
+
+func NewTower(i int) *Tower {
+	return &Tower{
+		index: i,
+	}
+}
+
+func (t *Tower) getIndex() int {
+	return t.index
+}
+
+func (t *Tower) add(d int) {
+	if !t.disks.isEmpty() && t.disks.peek() <= d {
+		fmt.Printf("Error placing disk %d ! \n\n", d)
+	} else {
+		t.disks.push(d)
+	}
+}
+
+func (t *Tower) moveToTop(twr *Tower) {
+	top := t.disks.pop()
+	twr.add(top)
+}
+
+func (t *Tower) moveDisks(n int, destination, buffer *Tower) *Tower {
+	if n > 0 {
+		t.moveDisks(n-1, buffer, destination)
+		t.moveToTop(destination)
+		buffer.moveDisks(n-1, destination, t)
+	}
+
+	return t
+}
