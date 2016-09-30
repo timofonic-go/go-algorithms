@@ -119,7 +119,7 @@ func CountWays(n int) int {
 //
 // Write a program to move the disks from the first tower to the last using Stacks.
 
-func HanoiTower() *Tower {
+func HanoiTower() []*Tower {
 
 	// rods
 	n := 3
@@ -133,37 +133,9 @@ func HanoiTower() *Tower {
 		towers[0].add(i)
 	}
 
-	return towers[0].moveDisks(n, towers[2], towers[1])
-}
+	towers[0].moveDisks(n, towers[2], towers[1])
 
-type Stack struct {
-	data []int
-}
-
-func (s *Stack) isEmpty() bool {
-	return len(s.data) == 0
-}
-
-func (s *Stack) peek() int {
-	if len(s.data) == 0 {
-		return -1
-	}
-	return s.data[len(s.data)-1]
-}
-
-func (s *Stack) pop() int {
-	if len(s.data) == 0 {
-		return -1
-	}
-	out := s.data[len(s.data)-1]
-
-	s.data = s.data[1:len(s.data)]
-
-	return out
-}
-
-func (s *Stack) push(d int) {
-	s.data = append(s.data, d)
+	return towers
 }
 
 type Tower struct {
@@ -177,13 +149,9 @@ func NewTower(i int) *Tower {
 	}
 }
 
-func (t *Tower) getIndex() int {
-	return t.index
-}
-
 func (t *Tower) add(d int) {
 	if !t.disks.isEmpty() && t.disks.peek() <= d {
-		fmt.Printf("Error placing disk %d ! \n\n", d)
+		fmt.Printf("Error placing disk %d ! \n", d)
 	} else {
 		t.disks.push(d)
 	}
@@ -194,12 +162,10 @@ func (t *Tower) moveToTop(twr *Tower) {
 	twr.add(top)
 }
 
-func (t *Tower) moveDisks(n int, destination, buffer *Tower) *Tower {
+func (t *Tower) moveDisks(n int, destination, buffer *Tower) {
 	if n > 0 {
 		t.moveDisks(n-1, buffer, destination)
 		t.moveToTop(destination)
 		buffer.moveDisks(n-1, destination, t)
 	}
-
-	return t
 }

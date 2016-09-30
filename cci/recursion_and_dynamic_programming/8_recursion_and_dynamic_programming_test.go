@@ -1,7 +1,7 @@
 package recursion_and_dynamic_programming
 
 import (
-	"sort"
+	"reflect"
 	"testing"
 )
 
@@ -54,11 +54,16 @@ func TestCountWays(t *testing.T) {
 // 8.6 Hanoi Tower
 func TestHanoiRun(t *testing.T) {
 
-	//src := []int{2, 3, 1}
+	expected := []int{2, 1, 0}
 
 	actual := HanoiTower()
 
-	if !sort.IntsAreSorted(actual.disks.data) {
+	if !reflect.DeepEqual(expected, actual[2].disks.data) {
 		t.Error("Failed!")
+		t.Log("Expected:\n")
+		t.Logf("%+v\n", expected)
+
+		t.Log("Got:\n")
+		t.Logf("%+v\n", actual[2].disks.data)
 	}
 }
