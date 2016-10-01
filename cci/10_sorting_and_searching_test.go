@@ -43,3 +43,25 @@ func TestBinarySearch(t *testing.T) {
 		t.Errorf("Expected %v, got %v", expected, actual)
 	}
 }
+
+// 10.1 Sorted Merge
+func TestSortedMerge(t *testing.T) {
+
+	a := make([]int, 6)
+	a[0] = 1
+	a[1] = 3
+	a[2] = 5
+
+	//t.Logf("Array a: %+v \n\n", a)
+
+	b := []int{2, 4, 6}
+	//t.Logf("Array b: %+v \n\n", b)
+
+	actual := SortedMerge(a, b, 3, 3)
+
+	//t.Logf("Sorted array: %+v \n\n", actual)
+
+	if !sort.IntsAreSorted(actual) {
+		t.Errorf("SortedMerge failed. Actual result: %#v", actual)
+	}
+}

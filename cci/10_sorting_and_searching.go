@@ -217,3 +217,29 @@ func binarySearch(arr []int, searchFor, min, max int) int {
 		return mid
 	}
 }
+
+// 10.1 Sorted Merge: You are given two sorted arrays, A and B, where A has a large enough buffer at the
+// end to hold B. Write a method to merge B into A in sorted order.
+// Note that you don't need to copy the contents of A after running out of elements in B. They are already in place.
+func SortedMerge(a, b []int, lastA, lastB int) []int {
+	indexA := lastA - 1              // Index of last element in array a
+	indexB := lastB - 1              // Index of last element in array b
+	indexMerged := lastB + lastA - 1 // End of merged array
+
+	// Merge a and b, starting from the last element in each
+	for indexB >= 0 {
+		// end of a is > than end of b
+		if indexA >= 0 && a[indexA] > b[indexB] {
+
+			a[indexMerged] = a[indexA] // copy element
+			indexA--
+		} else {
+
+			a[indexMerged] = b[indexB] // copy element
+			indexB--
+		}
+		indexMerged--
+	}
+
+	return a
+}
