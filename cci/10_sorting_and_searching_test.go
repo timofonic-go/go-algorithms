@@ -6,8 +6,7 @@ import (
 )
 
 func TestMergeSort(t *testing.T) {
-	actual := []int{2, 4, 3, 5, 1}
-
+	actual := []int{14, 33, 27, 10, 35, 19, 42, 44}
 	MergeSort(&actual)
 
 	if !sort.IntsAreSorted(actual) {
