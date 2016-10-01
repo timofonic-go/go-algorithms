@@ -22,3 +22,12 @@ func TestQuickSort(t *testing.T) {
 		t.Errorf("QuickSort failed. Actual result: %#v", actual)
 	}
 }
+
+func TestBubbleSort(t *testing.T) {
+	given := []int{14, 33, 27, 10, 35, 19, 42, 44}
+	actual := BubbleSort(given)
+
+	if !sort.IntsAreSorted(actual) {
+		t.Errorf("BubbleSort failed. Actual result: %#v", actual)
+	}
+}
