@@ -1,5 +1,9 @@
 package cci
 
+import (
+	"math/rand"
+)
+
 /**
 
 Bubble Sort | Runtime: 0( n2 ) average and worst case. Memory: 0( 1) .
@@ -99,4 +103,59 @@ func merge(arr *[]int, low, middle, high int) {
 	for i := 0; i <= remaining; i++ {
 		(*arr)[current+i] = helper[leftCursor+i]
 	}
+}
+
+/**
+
+Quick Sort | Runtime: O( n log(n) ) average, O( n2 ) worst case. Memory: O( log(n) ).
+
+In quick sort we pick a random element and partition the array, such that all numbers that are less than the
+partitioning element come before all elements that are greater than it. The partitioning can be performed
+efficiently through a series of swaps (see below).
+
+If we repeatedly partition the array (and its sub-arrays) around an element, the array will eventually become
+sorted. However, as the partitioned element is not guaranteed to be the median (or anywhere near the
+median), our sorting could be very slow. This is the reason for the O(n2) worst case runtime.
+
+INFO
+https://www.khanacademy.org/computing/computer-science/algorithms/quick-sort/a/overview-of-quicksort
+
+So why think about quicksort when merge sort is at least as good?
+That's because the constant factor hidden in the big-Θ notation for quicksort is quite good.
+In practice, quicksort outperforms merge sort, and it significantly outperforms selection sort and insertion sort.
+
+*/
+
+func QuickSort(arr []int) []int {
+
+	length := len(arr)
+
+	if length < 2 {
+		return arr
+	}
+
+	pivot := arr[rand.Intn(length)]
+
+	left := make([]int, 0, length)
+	middle := make([]int, 0, length)
+	right := make([]int, 0, length)
+
+	for i := 0; i < length-1; i++ {
+
+		switch {
+		case arr[i] < pivot:
+			left = append(left, arr[i])
+		case arr[i] > pivot:
+			right = append(right, arr[i])
+		case arr[i] == pivot:
+			middle = append(middle, arr[i])
+		}
+	}
+
+	left, right = QuickSort(left), QuickSort(right)
+
+	left = append(left, middle...)
+	left = append(left, right...)
+
+	return left
 }
