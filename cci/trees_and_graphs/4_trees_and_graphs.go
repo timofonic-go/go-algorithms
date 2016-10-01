@@ -17,6 +17,10 @@ type Node struct {
 	Parent *Node
 }
 
+func (n *Node) Visit() {
+	n.Visited = true
+}
+
 func (n *Node) Add(i int) *Node {
 
 	newNode := &Node{
@@ -900,16 +904,27 @@ func DFS(root *Node, i int) *Node {
 
 func BFS(root *Node, i int) *Node {
 
+	if root == nil {
+		return root
+	}
+
+	if root.Val == i {
+		return root
+	}
+
 	q := Queue{}
 	root.Visit()
 	q.Enqueue(root)
 
 	for !q.IsEmpty() {
+
 		r := q.Dequeue()
 		r.Visit()
 
 		for _, n := range r.Children {
-			if !n.Visited {
+
+			if n.Visited == false {
+
 				if n.Val == i {
 					return n
 				}
@@ -918,11 +933,8 @@ func BFS(root *Node, i int) *Node {
 				q.Enqueue(n)
 			}
 		}
+
 	}
 
 	return nil
-}
-
-func (n *Node) Visit() {
-	n.Visited = true
 }
