@@ -873,18 +873,56 @@ func DFS(root *Node, i int) *Node {
 		return root
 	}
 
-	root.Visited = true
+	root.Visit()
 
 	for _, n := range root.Children {
 
 		if !n.Visited {
 
-			found := DFS(n, i)
-			if found.Val == i {
-				return found
+			n.Visit()
+
+			resNode := DFS(n, i)
+			if resNode.Val == i {
+				return resNode
 			}
 		}
 	}
 
 	return root
+}
+
+// BFS / Breadth-First Search
+// BFS is a bit less intuitive, and many interviewees struggle with the implementation unless they are already
+// familiar with it. The main tripping point is the (false) assumption that BFS is recursive. It's not.
+// Instead, it uses a queue.
+// In BFS, node a visits each of a's neighbors before visiting any of their neighbors. You can think of this as
+// searching level by level out from a. An iterative solution involving a queue usually works best.
+
+func BFS(root *Node, i int) *Node {
+
+	q := Queue{}
+	root.Visit()
+	q.Enqueue(root)
+
+	for !q.IsEmpty() {
+		r := q.Dequeue()
+		r.Visit()
+
+		for _, n := range r.Children {
+			if !n.Visited {
+				if n.Val == i {
+					return n
+				}
+
+				n.Visit()
+				q.Enqueue(n)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (n *Node) Visit() {
+	n.Visited = true
 }

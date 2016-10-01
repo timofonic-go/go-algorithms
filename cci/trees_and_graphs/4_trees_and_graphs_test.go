@@ -451,6 +451,28 @@ func TestDFS(t *testing.T) {
 	actual := DFS(n40, 50)
 
 	if expected != actual {
-		t.Errorf("Expected: %v, got: %v", expected.Val, actual)
+		t.Errorf("Expected: %v, got: %v", expected.Val, actual.Val)
+	}
+}
+
+func TestBFS(t *testing.T) {
+	n40 := &Node{
+		Val: 40,
+	}
+
+	n20 := n40.Add(20)
+	n60 := n40.Add(60)
+
+	_ = n20.Add(10)
+	_ = n20.Add(30)
+
+	n50 := n60.Add(50)
+	_ = n60.Add(70)
+
+	expected := n50
+	actual := BFS(n40, 50)
+
+	if expected != actual {
+		t.Errorf("Expected: %v, got: %v", expected.Val, actual.Val)
 	}
 }
