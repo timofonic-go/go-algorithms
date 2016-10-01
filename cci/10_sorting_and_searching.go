@@ -176,3 +176,44 @@ func BubbleSort(arr []int) []int {
 
 	return arr
 }
+
+/**
+Binary Search
+
+In binary search, we look for an element x in a __sorted array__ by first comparing x to the midpoint of the array.
+If xis less than the midpoint, then we search the left half of the array. If x is greater than the midpoint, then
+we search the right half of the array. We then repeat this process, treating the left and right halves as subarrays.
+
+Again, we compare x to the midpoint of this subarray and then search either its left or right side. We
+repeat this process until we either find x or the subarray has size 0.
+
+INFO
+https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/implementing-binary-search-of-an-array
+*/
+
+func BinarySearch(arr []int, searchFor int) int {
+
+	return binarySearch(arr, searchFor, 0, len(arr)-1)
+}
+
+// binarySearch runs a binary search on an array slice from "min" to "max" index.
+func binarySearch(arr []int, searchFor, min, max int) int {
+
+	// Validation.
+	if min > max {
+		return -1
+	}
+
+	// Calculate a slice middle.
+	mid := (min + max) / 2
+
+	// Continue search recursion based on a bucket where result is found.
+	switch {
+	case searchFor < arr[mid]:
+		return binarySearch(arr, searchFor, min, mid-1)
+	case searchFor > arr[mid]:
+		return binarySearch(arr, searchFor, mid+1, max)
+	default:
+		return mid
+	}
+}

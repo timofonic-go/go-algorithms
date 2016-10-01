@@ -31,3 +31,15 @@ func TestBubbleSort(t *testing.T) {
 		t.Errorf("BubbleSort failed. Actual result: %#v", actual)
 	}
 }
+
+func TestBinarySearch(t *testing.T) {
+
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	searchFor := 6
+	expected := 5
+	actual := BinarySearch(arr, searchFor)
+
+	if actual != expected {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
