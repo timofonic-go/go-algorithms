@@ -94,6 +94,7 @@ func merge(arr *[]int, low, middle, high int) {
 	// Copy the rest of the left side of the array into the target array.
 	// Left side = because we were filling in starting from the left side
 	// and right elements already there and match.
+	// We continue from where we left: current cursor for the arr, and leftCursor for the helper.
 	remaining := middle - leftCursor
 	for i := 0; i <= remaining; i++ {
 		(*arr)[current+i] = helper[leftCursor+i]
