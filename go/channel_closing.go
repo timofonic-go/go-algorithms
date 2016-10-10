@@ -17,8 +17,8 @@ func main() {
 		// Infinite loop to listen to incoming jobs.
 		for {
 			job, more := <-jobs
-			// more value will be false if jobs has been closed and
-			// all values in the channel have already been received
+			// "more" value will be false if jobs has been closed and
+			// all values in the channel have already been received.
 			if more {
 				fmt.Println("Received job ", job)
 			} else {
