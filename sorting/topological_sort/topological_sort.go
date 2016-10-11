@@ -16,7 +16,7 @@ func TopologicalSort(tree map[string][]string) []string {
 		if !ok {
 			inDegree[element] = 0
 		}
-		
+
 		for _, child := range children {
 			inDegree[child]++
 		}
@@ -33,9 +33,9 @@ func TopologicalSort(tree map[string][]string) []string {
 
 	// 03. While zero-degree-stack is not empty:
 	for len(stack) > 0 {
+
 		// 03.01. Pop element from zero-degree-stack and append it to topological order;
-		var node string
-		node = stack[len(stack)-1]
+		node := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
 
 		// 03.02. Find all children of element and decrease indegree. If indegree becomes 0, add to zero-degree-stack;
