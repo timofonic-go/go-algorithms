@@ -36,8 +36,8 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		return 0
 	}
 
-	// Nodes with weights to process from the current node.
-	distances := make(nodes)
+	// Nodes with length to process.
+	todo := make(nodes)
 
 	// Already visited nodes
 	visited := make(nodes)
@@ -57,7 +57,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			}
 
 			// If node has already been visited.
-			weight, ok := distances[edge.To]
+			weight, ok := todo[edge.To]
 			if ok {
 				// Skip node, if distance to it is already lower than the distance
 				// to current node + length of edge
@@ -69,11 +69,11 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			// At this point, we either have not calculated node's distance yet
 			// or its distance is higher than the new one.
 			// Set its distance to the current one: distance to the current node + length of current edge.
-			distances[edge.To] = visited[current] + edge.Length
+			todo[edge.To] = visited[current] + edge.Length
 		}
 
 		// Stop if nothing left to process.
-		if len(distances) == 0 {
+		if len(todo) == 0 {
 			break
 		}
 
@@ -82,7 +82,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		min := math.Inf(+1)
 
 		// Process all remaining nodes.
-		for node, distance := range distances {
+		for node, distance := range todo {
 
 			// If distance via this node is lower than existing minimum for this node
 			if distance <= min {
@@ -96,7 +96,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		}
 
 		// Delete processed node from the list of unprocessed.
-		delete(distances, current)
+		delete(todo, current)
 
 		// Update a list of visited nodes with a current node and its shortest distance.
 		visited[current] = min
