@@ -12,11 +12,11 @@ func TopologicalSort(tree map[string][]string) []string {
 	for element, children := range tree {
 
 		// Set value 0 to inexisting elements.
-		if inDegree[element] == 0 {
-			// In golang inexisting element of type int will be zero.
-			// Same as a check via _, ok := inDegree[element]
+		_, ok := inDegree[element]
+		if !ok {
 			inDegree[element] = 0
 		}
+		
 		for _, child := range children {
 			inDegree[child]++
 		}
