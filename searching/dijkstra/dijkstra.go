@@ -36,10 +36,10 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		return 0
 	}
 
-	// Nodes with length to process.
+	// Nodes with temporary distance values that may be recalculated later.
 	todo := make(nodes)
 
-	// Already visited nodes
+	// Array of shortest distances.
 	visited := make(nodes)
 
 	// 0.1 Init
@@ -51,25 +51,24 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		// 0.2 Recalculate distances to all neighbors of the current node.
 		for _, edge := range current.Neighborhood {
 
-			// Skip already visited.
+			// Skip already marked as shortest distance.
 			_, ok := visited[edge.To]
 			if ok {
 				continue
 			}
 
-			// If node has already been visited.
+			// Determine if this node's distance has already been calculated.
+			// If not, calculate and add to the todo list (will determine if shortest later).
+			// If yes, recalculate distance if it is longer than previously calculated.
 			weight, ok := todo[edge.To]
 			if ok {
-				// Skip node, if distance to it is already lower than the distance
-				// to current node + length of edge
+				// Skip node, if distance to it is already lower than the distance to it
+				// via the current node.
 				if weight < visited[current]+edge.Length {
 					continue
 				}
 			}
 
-			// At this point, we either have not calculated node's distance yet
-			// or its distance is higher than the new one.
-			// Set its distance to the current one: distance to the current node + length of current edge.
 			todo[edge.To] = visited[current] + edge.Length
 		}
 
@@ -78,7 +77,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			break
 		}
 
-		// Distances of all neighbors have been recalculated.
+		// Distances to all neighbor nodes have been recalculated.
 		// Now choose the shortest one.
 		min := math.Inf(+1)
 
@@ -96,10 +95,11 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			}
 		}
 
-		// Update a list of visited nodes with a current node and its shortest distance.
+		// Distance to this node is the shortest.
+		// Store in the list of shortest distances.
 		visited[current] = min
 
-		// Delete processed node from the list of unprocessed.
+		// Delete from the list of unprocessed nodes.
 		delete(todo, current)
 	}
 
