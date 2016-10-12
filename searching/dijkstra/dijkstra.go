@@ -62,8 +62,8 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			// If yes, recalculate distance if it is longer than previously calculated.
 			weight, ok := todo[edge.To]
 			if ok {
-				// Skip node, if distance to it is already lower than the distance to it
-				// via the current node.
+				// Skip a node if distance to it is already lower than the distance to it
+				// via the current node (hence using "visited").
 				if weight < visited[current]+edge.Length {
 					continue
 				}
