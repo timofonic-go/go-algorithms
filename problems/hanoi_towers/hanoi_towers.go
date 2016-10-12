@@ -63,19 +63,20 @@ func (t *Tower) moveToTop(twr *Tower) {
 }
 
 // moveDisks implements logic of moving disks
-func (t *Tower) moveDisks(n int, destination, buffer *Tower) {
+func (src *Tower) moveDisks(n int, destination, buffer *Tower) {
 	if n > 0 {
 
 		// Move all top disks except for the one on the bottom
 		// Moves from from the origin t to the buffer, using destination as a buffer
-		t.moveDisks(n-1, buffer, destination)
+		src.moveDisks(n-1, buffer, destination)
 
 		// Move remaining, largest disk into destination
-		t.moveToTop(destination)
+		src.moveToTop(destination)
 
 		// Move remaining n-1 disks, from the top of the buffer to the destination.
 		// We are moving disks from the current buffer, hence buffer.moveDisks(...
-		// We are moving disks using current tower as a buffer, hence t in ...,destination, t)
-		buffer.moveDisks(n-1, destination, t)
+		// We are moving disks using current tower as a buffer, hence src in ...,destination, src)
+		buffer.moveDisks(n-1, destination, src) // NOTE! Always forgetting to use src here!
+
 	}
 }
