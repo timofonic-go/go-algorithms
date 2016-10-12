@@ -47,7 +47,7 @@ func TestGraph_ShortestPath(t *testing.T) {
 		graph.AddEdge(edge.from, edge.to, edge.length)
 	}
 
-	actual, err := graph.ShortestPath("1", "4")
+	actual, err := graph.ShortestPath("1", "5")
 	expected := 20.0
 
 	if err != nil {
