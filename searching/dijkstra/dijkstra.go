@@ -42,15 +42,16 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 	// Already visited nodes
 	visited := make(nodes)
 
+	// 0.1 Init
 	visited[from] = 0
 	current := from
 
 	for {
 
-		// Recalculate distances to all neighbors.
+		// 0.2 Recalculate distances to all neighbors of the current node.
 		for _, edge := range current.Neighborhood {
 
-			// Skip nodes we already visited.
+			// Skip already visited.
 			_, ok := visited[edge.To]
 			if ok {
 				continue
@@ -72,7 +73,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			todo[edge.To] = visited[current] + edge.Length
 		}
 
-		// Stop if nothing left to process.
+		// Stop if no vertices left to go to.
 		if len(todo) == 0 {
 			break
 		}
@@ -81,7 +82,7 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 		// Now choose the shortest one.
 		min := math.Inf(+1)
 
-		// Process all remaining nodes.
+		// Find the shortest path and next node among the remaining nodes.
 		for node, distance := range todo {
 
 			// If distance via this node is lower than existing minimum for this node
@@ -95,11 +96,11 @@ func (g *Graph) Dijkstra(from, to *Vertex) float64 {
 			}
 		}
 
-		// Delete processed node from the list of unprocessed.
-		delete(todo, current)
-
 		// Update a list of visited nodes with a current node and its shortest distance.
 		visited[current] = min
+
+		// Delete processed node from the list of unprocessed.
+		delete(todo, current)
 	}
 
 	// If the node we are looking for is among the visited nodes - return its weight.
