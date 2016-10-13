@@ -925,17 +925,17 @@ func BFS(root *Node, i int) *Node {
 
 		for _, child := range n.Children {
 
-			if !child.Visited {
-				if child.Val == i {
-					return child
-				}
-
-				child.Visit()
-				q.Enqueue(child)
+			if child.Visited {
+				continue
 			}
 
-		}
+			if child.Val == i {
+				return child
+			}
 
+			child.Visit()
+			q.Enqueue(child)
+		}
 	}
 
 	return nil
