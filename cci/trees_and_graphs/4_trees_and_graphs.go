@@ -869,6 +869,7 @@ func countPathsWithSumFromNode(node *TreeNode, targetSum, currentSum int) int {
 // DFS / Depth-First Search
 // https://github.com/adlawson/search-algorithms/blob/master/golang/dfs.go
 func DFS(root *Node, i int) *Node {
+
 	if root == nil {
 		return nil
 	}
@@ -881,15 +882,17 @@ func DFS(root *Node, i int) *Node {
 
 	for _, n := range root.Children {
 
-		if !n.Visited {
-
-			n.Visit()
-
-			resNode := DFS(n, i)
-			if resNode.Val == i {
-				return resNode
-			}
+		if n.Visited {
+			continue
 		}
+
+		n.Visit()
+
+		resNode := DFS(n, i)
+		if resNode.Val == i {
+			return resNode
+		}
+
 	}
 
 	return root
