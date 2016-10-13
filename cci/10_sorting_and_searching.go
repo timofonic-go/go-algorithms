@@ -55,6 +55,7 @@ func merge(arr *[]int, low, middle, high int) {
 	// Note: arr will be totally overwritten by the end of the function
 	// with sorted values from helper.
 
+	// 1. Prepare a helper array with all values from low to high.
 	helper := make([]int, len(*arr))
 
 	// Copy both halves into a helper array
@@ -62,20 +63,23 @@ func merge(arr *[]int, low, middle, high int) {
 		helper[i] = (*arr)[i]
 	}
 
-	// Set cursors to initial positions to scan two halves of a provided array.
+	// 2. Update "arr" array with sorted values from a helper.
+
+	// Set 2 cursors to initial positions to scan both halves of a given array.
 	leftCursor := low
 	rightCursor := middle + 1
 	current := low
 
 	// Iterate through helper array.
-	// Compare the left and right half, copying back the smaller element
-	// from the two halves into the original array.
 	for leftCursor <= middle && rightCursor <= high {
+
+		// Compare the left and right half, copying a smaller element
+		// from the two halves into the original array.
+
 		if helper[leftCursor] <= helper[rightCursor] {
 			(*arr)[current] = helper[leftCursor]
 			leftCursor++
 		} else {
-			// If right element is smaller than left element
 			(*arr)[current] = helper[rightCursor]
 			rightCursor++
 		}
@@ -84,10 +88,11 @@ func merge(arr *[]int, low, middle, high int) {
 		current++
 	}
 
-	// Copy the rest of the left side of the array into the target array.
+	// 3. Copy the rest of the left side of the array into the target array.
+	//
 	// Left side = because we were filling in starting from the left side
 	// and right elements already there and match.
-	// We continue from where we left: current cursor for the arr, and leftCursor for the helper.
+	// We continue from where we left step 2: current cursor for the arr, and leftCursor for the helper.
 	remaining := middle - leftCursor
 	for i := 0; i <= remaining; i++ {
 		(*arr)[current+i] = helper[leftCursor+i]
