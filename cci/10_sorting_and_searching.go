@@ -100,7 +100,6 @@ func merge(arr *[]int, low, middle, high int) {
 }
 
 /**
-
 Quick Sort | Runtime: O( n log(n) ) average, O( n2 ) worst case. Memory: O( log(n) ).
 
 In quick sort we pick a random element and partition the array, such that all numbers that are less than the
@@ -113,13 +112,13 @@ median), our sorting could be very slow. This is the reason for the O(n2) worst 
 
 INFO
 https://www.khanacademy.org/computing/computer-science/algorithms/quick-sort/a/overview-of-quicksort
+https://www.tutorialspoint.com/data_structures_algorithms/quick_sort_algorithm.htm
 
 So why think about quicksort when merge sort is at least as good?
 That's because the constant factor hidden in the big-Θ notation for quicksort is quite good.
 In practice, quicksort outperforms merge sort, and it significantly outperforms selection sort and insertion sort.
 
 */
-
 func QuickSort(arr []int) []int {
 
 	length := len(arr)
