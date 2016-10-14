@@ -428,6 +428,72 @@ func (q *MyQueue) Peek() int {
 	return q.s2[len(q.s2)-1]
 }
 
+// 3.4 #2
+type stack struct {
+	data []int
+}
+
+func (s *stack) push(i int) {
+	s.data = append(s.data, i)
+}
+
+func (s *stack) peek() int {
+	return s.data[len(s.data)-1]
+}
+
+func (s *stack) pop() int {
+	el := s.peek()
+	s.data = s.data[:len(s.data)-1]
+	return el
+}
+
+func (s *stack) isEmpty() bool {
+	if len(s.data) == 0 {
+		return true
+	}
+
+	return false
+}
+
+type StackQueue struct {
+	sNew, sOld *stack
+}
+
+func NewStack() *stack {
+	return &stack{
+		data: make([]int, 0),
+	}
+}
+
+func NewStackQueue() *StackQueue {
+	return &StackQueue{
+		sNew: NewStack(),
+		sOld: NewStack(),
+	}
+}
+
+func (s *StackQueue) Add(i int) {
+	s.sNew.push(i)
+}
+
+func (s *StackQueue) ShiftStacks() {
+	if s.sOld.isEmpty() {
+		for !s.sNew.isEmpty() {
+			s.sOld.push(s.sNew.pop())
+		}
+	}
+}
+
+func (s *StackQueue) Peek() int {
+	s.ShiftStacks()
+	return s.sOld.peek()
+}
+
+func (s *StackQueue) Pop() int {
+	s.ShiftStacks()
+	return s.sOld.pop()
+}
+
 // 3.5 Sort Stack:
 // Write a program to sort a stack such that the smallest items are on the top.
 // You can use an additional temporary stack, but you may not copy the elements

@@ -334,6 +334,27 @@ func TestMyQueue(t *testing.T) {
 	}
 }
 
+func TestStackQueue(t *testing.T) {
+
+	q := NewStackQueue()
+	q.Add(1)
+	q.Add(2)
+	q.Add(3)
+	q.Add(4)
+	q.Add(5)
+
+	q.Pop()
+	q.Pop()
+	el := q.Peek()
+
+	expected := 3
+	actual := el
+
+	if expected != actual {
+		t.Errorf("Expected %v, got %v", expected, actual)
+	}
+}
+
 func TestStack_Sort(t *testing.T) {
 
 	s := &Stack2{}
