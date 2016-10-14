@@ -79,22 +79,49 @@ func TestMinimalTree(t *testing.T) {
 	}
 }
 
-// 4.3
+// 4.3 List Of Depths
 func TestListOfDepths(t *testing.T) {
 
-	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	n := MinimalTree(arr)
-
-	listOfDepths := ListOfDepths(n)
-
-	for i, l := range listOfDepths {
-		t.Log("\n\n")
-		t.Logf("Level %d\n", i+1)
-		for n := l.head; n != nil; n = n.Next {
-			t.Logf("%v -> ", n.Val)
-		}
-		t.Log("\n")
+	root := &Node{
+		Val: 1,
 	}
+
+	root.Left = &Node{
+		Val: 2,
+	}
+	root.Left.Left = &Node{
+		Val: 4,
+	}
+	root.Left.Right = &Node{
+		Val: 5,
+	}
+
+	root.Right = &Node{
+		Val: 3,
+	}
+	root.Right.Left = &Node{
+		Val: 6,
+	}
+	root.Right.Right = &Node{
+		Val: 7,
+	}
+
+	m := ListOfDepths(root)
+	fmt.Printf("%+v \n\n", m[0].Val) // 1
+
+	fmt.Printf("%+v -> ", m[1].Val)       // 2
+	fmt.Printf("%+v \n\n", m[1].Next.Val) // 3
+
+	fmt.Printf("%+v -> ", m[2].Val)                 // 4
+	fmt.Printf("%+v -> ", m[2].Next.Val)            // 5
+	fmt.Printf("%+v -> ", m[2].Next.Next.Val)       // 6
+	fmt.Printf("%+v \n\n", m[2].Next.Next.Next.Val) // 7
+
+	if m[0].Val != 1 || m[1].Val != 2 || m[1].Next.Val != 3 || m[2].Val != 4 ||
+		m[2].Next.Val != 5 || m[2].Next.Next.Val != 6 || m[2].Next.Next.Next.Val != 7 {
+		t.Error("Incorrect ListOfDepths implementation")
+	}
+
 }
 
 // 4.4 Checked Balanced.

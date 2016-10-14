@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"strconv"
 )
 
 type Node struct {
@@ -180,6 +181,19 @@ type List struct {
 	size int
 }
 
+func (l *List) Print() string {
+
+	if l == nil {
+		return ""
+	}
+
+	out := ""
+	for n := l.head; n != nil; n = n.Next {
+		out = out + strconv.Itoa(n.Val)
+	}
+	return out
+}
+
 func (l *List) AddNode(n *Node) {
 	l.size++
 
@@ -203,34 +217,73 @@ func (l *List) Size() int {
 	return l.size
 }
 
-func ListOfDepths(root *Node) []*List {
+/*
+4.3 List Of Depths.
 
-	result := []*List{}
-	current := &List{}
+Solution based on:
+http://algorithms.tutorialhorizon.com/in-a-binary-tree-create-linked-lists-of-all-the-nodes-at-each-depth/
 
-	if root != nil {
-		current.AddNode(root)
-	}
+INPUT:
+- root of a tree
 
-	for current.Size() > 0 {
-		result = append(result, current) // Add previous level
+OUT:
+- array of list heads, linked list per level
 
-		parents := current // Go to next level
+Key is to enqueue all children into one queue.
 
-		current = &List{}
+*/
+func ListOfDepths(n *Node) []*Node {
 
-		for parent := parents.head; parent != nil; parent = parent.Next {
-			if parent.Left != nil {
-				current.AddNode(parent.Left)
+	al := make([]*Node, 0)
+	q := Queue{}
+	q.Enqueue(n)
+
+	// repeat until queue for a given level is not empty (reach bottom of the tree)
+	for !q.IsEmpty() {
+
+		// All nodes of the current level of the tree.
+		levelNodes := len(q.Nodes)
+
+		// head for a linked list that will hold all nodes of the current level
+		var head *Node
+
+		// last node of a linked list for chaining new nodes
+		var tail *Node
+
+		// go through all nodes
+		for levelNodes > 0 {
+
+			// remove one
+			n := q.Dequeue()
+
+			// point head & tail to it if this is a first node on this level
+			if head == nil {
+				head = n
+				tail = n
+			} else {
+				// chain to tail
+				tail.Next = n
+
+				// re-point to tail to the last node
+				tail = tail.Next
 			}
-			if parent.Right != nil {
-				current.AddNode(parent.Right)
+
+			// add children of current node for processing on the next level
+			if n.Left != nil {
+				q.Enqueue(n.Left)
 			}
+			if n.Right != nil {
+				q.Enqueue(n.Right)
+			}
+
+			levelNodes--
 		}
 
-	}
+		// add a head of the linked list for the current level to a slice of level linked lists
+		al = append(al, head)
 
-	return result
+	}
+	return al
 }
 
 // 4.4 Checked Balanced.
