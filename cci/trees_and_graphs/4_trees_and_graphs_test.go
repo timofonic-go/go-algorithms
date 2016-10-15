@@ -216,23 +216,21 @@ func (n *Node) AddRight(i int) *Node {
 	return n.Right
 }
 
+// 4.6 Find successor in a binary search tree
 func TestSuccessor(t *testing.T) {
 
-	n40 := &Node{
-		Val: 40,
-	}
+	n20 := NewNode(20)
 
-	n20 := n40.AddLeft(20)
-	n60 := n40.AddRight(60)
+	n8 := n20.AddLeft(8)
+	n8.AddLeft(4)
+	n12 := n8.AddRight(12)
+	n12.AddLeft(10)
+	n14 := n12.AddRight(14)
 
-	_ = n20.AddLeft(10)
-	n30 := n20.AddRight(30)
+	n20.AddRight(2)
 
-	_ = n60.AddLeft(50)
-	_ = n60.AddRight(70)
-
-	expected := n40
-	actual := Successor(n30)
+	expected := n20
+	actual := Successor(n14)
 
 	if nil == actual {
 		t.Fatal("Should return non-nil actual value")

@@ -18,6 +18,12 @@ type Node struct {
 	Parent *Node
 }
 
+func NewNode(i int) *Node {
+	return &Node{
+		Val: i,
+	}
+}
+
 func (n *Node) Visit() {
 	n.Visited = true
 }
@@ -402,8 +408,7 @@ func isBST(n *Node, min, max int) bool {
 
 INFO
 
-In-order traversal means to "visit" (often, print) the left branch, then the current node, and finally, the right
-branch.
+In-order traversal means to "visit" (often, print) the left branch, then the current node, and finally, the right branch.
 
 1 void inOrderTraversal(TreeNode node) {
 2 	if (node!= null) {
@@ -420,8 +425,6 @@ http://www.java2blog.com/2014/07/binary-tree-inorder-traversal-in-java.html
 http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
 "In Binary Search Tree, Inorder Successor of an input node can also be defined as the node with the smallest key greater than the key of input node."
 
-NOTES
-1. Requires a Parent node property to exist and related modification of Add()
 
 */
 
@@ -435,16 +438,17 @@ func Successor(n *Node) *Node {
 	if n.Right != nil {
 		return leftMostChild(n.Right)
 	} else {
-		q := n
-		x := q.Parent // parent
 
-		// Go up until we're on left instead of right
-		for x != nil && x.Left != q {
-			q = x
-			x = x.Parent
+		p := n.Parent // parent
+
+		// Travel up using the parent while n is a right node.
+		// When n is no longer on the right = n is a left child, and p is what we are looking for!
+		for p != nil && p.Right == n {
+			n = p        // move a child node 1 step up
+			p = p.Parent // move a parent node 1 step up
 		}
 
-		return x
+		return p
 	}
 }
 
