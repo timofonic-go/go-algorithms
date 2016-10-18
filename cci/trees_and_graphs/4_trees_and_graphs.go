@@ -703,14 +703,14 @@ func ContainsTree(t1, t2 *Node) bool {
 func subTree(r1, r2 *Node) bool {
 
 	if r1 == nil {
-		// Big tree is empty.
+		// Reached the end and could not find the root node of the smaller tree.
 		return false
 	} else if r1.Val == r2.Val && matchTree(r1, r2) {
 		// Matching node found.
 		return true
 	}
 
-	// Matching node not found. Continue traversing both sides and return true if a smaller tree found.
+	// Matching node not found. Continue traversing both sides and return true if the smaller tree is found.
 	return subTree(r1.Left, r2) || subTree(r1.Right, r2)
 }
 
@@ -718,14 +718,20 @@ func subTree(r1, r2 *Node) bool {
 func matchTree(r1, r2 *Node) bool {
 
 	if r1 == nil && r2 == nil {
-		return true // nothing left in subtree
-	} else if r1 == nil || r2 == nil {
-		return false // one of the trees is empty, therefore trees don't match
-	} else if r1.Val != r2.Val {
-		return false // data does not match
-	} else {
-		return matchTree(r1.Left, r2.Left) && matchTree(r1.Right, r2.Right)
+		return true // Nothing more left in subtrees to check.
 	}
+
+	if r1 == nil || r2 == nil {
+		return false // One of the trees is empty, therefore trees don't match.
+	}
+
+	if r1.Val != r2.Val {
+		return false // Data does not match
+	}
+
+	// Up until this moment both nodes match.
+	// Continue comparing left and right subtrees.
+	return matchTree(r1.Left, r2.Left) && matchTree(r1.Right, r2.Right)
 }
 
 // 4.11 Random Node:
