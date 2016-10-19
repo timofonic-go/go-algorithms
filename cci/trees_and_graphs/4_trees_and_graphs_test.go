@@ -370,7 +370,7 @@ func TestNewTreeNode_RandomNode(t *testing.T) {
 	n.insertInOrder(50)
 	n.insertInOrder(70)
 
-	fmt.Printf("\nRandom node fetched: %+v\n", n.getRandomNode().size)
+	t.Logf("\n\nRandom node fetched: %+v\n\n", n.getRandomNode().size)
 }
 
 // 4.12 Paths with Sum
@@ -446,6 +446,7 @@ func TestPathCounter2(t *testing.T) {
 		data: 60,
 	}
 
+	// From root node
 	expected := 2
 	actual := CountPathsWithSum(n, 85)
 
@@ -454,7 +455,29 @@ func TestPathCounter2(t *testing.T) {
 	// 40 -> 20 -> 10 -> 15
 
 	if expected != actual {
-		t.Errorf("Expected: %v, got: %v", expected, actual)
+		t.Errorf("Root node | Expected: %v, got: %v", expected, actual)
+	}
+
+	// From second node
+	expected = 1
+	actual = CountPathsWithSum(n.left.left, 25)
+
+	// 1 paths:
+	// 20 -> 10 -> 5
+
+	if expected != actual {
+		t.Errorf("Second lvl node | Expected: %v, got: %v", expected, actual)
+	}
+
+	// From second node
+	expected = 1
+	actual = CountPathsWithSum(n.right, 45)
+
+	// 1 paths:
+	// 20 -> 45 -> 50
+
+	if expected != actual {
+		t.Errorf("Second lvl node, same node | Expected: %v, got: %v", expected, actual)
 	}
 }
 
