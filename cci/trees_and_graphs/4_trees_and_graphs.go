@@ -772,7 +772,7 @@ func (t *TreeNode) getRandomNode() *TreeNode {
 	// get number of children for a current node
 	index := rand.Intn(t.size)
 
-	// Determine a size for a next random generation.
+	// Determine a side for a next random generation.
 	if index < leftSize {
 
 		// Select random node from the left part
