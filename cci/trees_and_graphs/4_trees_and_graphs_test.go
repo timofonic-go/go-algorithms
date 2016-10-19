@@ -463,7 +463,7 @@ func TestPathCounter2(t *testing.T) {
 	actual = CountPathsWithSum(n.left.left, 25)
 
 	// 1 paths:
-	// 20 -> 10 -> 5
+	// 10 -> 15 (right)
 
 	if expected != actual {
 		t.Errorf("Second lvl node | Expected: %v, got: %v", expected, actual)
@@ -474,7 +474,7 @@ func TestPathCounter2(t *testing.T) {
 	actual = CountPathsWithSum(n.right, 45)
 
 	// 1 paths:
-	// 20 -> 45 -> 50
+	// 20 -> 45 (right)
 
 	if expected != actual {
 		t.Errorf("Second lvl node, same node | Expected: %v, got: %v", expected, actual)
