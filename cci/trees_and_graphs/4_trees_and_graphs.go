@@ -764,7 +764,9 @@ func NewTreeNode(d int) *TreeNode {
 
 // getRandomNode fetch a random node based on a probability of a specific side of node.
 func (t *TreeNode) getRandomNode() *TreeNode {
+
 	leftSize := 0
+
 	if t.left != nil {
 		leftSize = t.left.size
 	}
@@ -773,16 +775,18 @@ func (t *TreeNode) getRandomNode() *TreeNode {
 	index := rand.Intn(t.size)
 
 	// Determine a side for a next random generation.
-	if index < leftSize {
 
+	if index == leftSize {
+		return t
+	}
+
+	if index < leftSize {
 		// Select random node from the left part
 		return t.left.getRandomNode()
-	} else if index == leftSize {
-		return t
-	} else {
-		// Select random node from the right part
-		return t.right.getRandomNode()
 	}
+
+	// Select random node from the right part
+	return t.right.getRandomNode()
 }
 
 func (t *TreeNode) insertInOrder(d int) {
@@ -806,13 +810,16 @@ func (t *TreeNode) insertInOrder(d int) {
 func (t *TreeNode) find(d int) *TreeNode {
 	if t.data == d {
 		return t
-	} else if d <= t.data {
+	}
+
+	if d <= t.data {
 		if t.left != nil {
 			return t.left.find(d)
 		}
 		return nil
+	}
 
-	} else if d > t.data {
+	if d > t.data {
 		if t.right != nil {
 			return t.right.find(d)
 		}
